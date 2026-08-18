@@ -1,4 +1,6 @@
 <script>
+    import { supabase } from '$lib/supabase';
+
     let nombre = $state('');
     let correo = $state('');
     let password = $state('');
@@ -6,30 +8,51 @@
 
     let error = $state('');
     let mensaje = $state('');
+/**
+ * Maneja el envío del formulario de registro.
+ * @param {SubmitEvent} event
+ */
 
-    function registrarUsuario(event) {
-        event.preventDefault();
+    async function registrarUsuario(event) {
+    event.preventDefault();
 
-        error = '';
-        mensaje = '';
+    error = '';
+    mensaje = '';
 
-        if (
-            nombre.trim() === '' ||
-            correo.trim() === '' ||
-            password.trim() === '' ||
-            confirmarPassword.trim() === ''
-        ) {
-            error = 'Todos los campos son obligatorios.';
-            return;
-        }
-
-        if (password !== confirmarPassword) {
-            error = 'Las contraseñas no coinciden.';
-            return;
-        }
-
-        mensaje = 'Formulario válido. Próximamente conectaremos el registro con Supabase.';
+    if (
+        nombre.trim() === '' ||
+        correo.trim() === '' ||
+        password.trim() === '' ||
+        confirmarPassword.trim() === ''
+    ) {
+        error = 'Todos los campos son obligatorios.';
+        return;
     }
+
+    if (password !== confirmarPassword) {
+        error = 'Las contraseñas no coinciden.';
+        return;
+    }
+
+    if (password.length < 6) {
+        error = 'La contraseña debe tener al menos 6 caracteres.';
+        return;
+    }
+
+    const { data, error: errorSupabase } = await supabase.auth.signUp({
+        email: correo.trim(),
+        password: password
+    });
+
+    if (errorSupabase) {
+        error = errorSupabase.message;
+        return;
+    }
+
+    console.log('Usuario registrado:', data);
+
+    mensaje = 'Registro exitoso. Revisa tu correo electrónico para confirmar tu cuenta.';
+}
 </script>
 
 <svelte:head>
