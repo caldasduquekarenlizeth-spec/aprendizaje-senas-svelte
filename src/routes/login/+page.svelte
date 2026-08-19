@@ -1,94 +1,75 @@
 <script>
-    import { supabase } from "$lib/supabaseClient";
+    import { supabase } from '$lib/supabaseClient';
+    import { goto } from '$app/navigation';
 
-    let nombre = $state('');
     let correo = $state('');
     let password = $state('');
-    let confirmarPassword = $state('');
+
     let error = $state('');
     let mensaje = $state('');
-/**
- * Maneja el envío del formulario de registro.
- * @param {SubmitEvent} event
- */
+    let cargando = $state(false);
 
-    async function registrarUsuario(event) {
-    event.preventDefault();
+    /**
+     * Maneja el inicio de sesión.
+     * @param {SubmitEvent} event
+     */
+    async function iniciarSesion(event) {
+        event.preventDefault();
 
-    error = '';
-    mensaje = '';
+        error = '';
+        mensaje = '';
 
-    if (
-        nombre.trim() === '' ||
-        correo.trim() === '' ||
-        password.trim() === '' ||
-        confirmarPassword.trim() === ''
-    ) {
-        error = 'Todos los campos son obligatorios.';
-        return;
-    }
-
-    if (password !== confirmarPassword) {
-        error = 'Las contraseñas no coinciden.';
-        return;
-    }
-
-    if (password.length < 6) {
-        error = 'La contraseña debe tener al menos 6 caracteres.';
-        return;
-    }
-
-    const { data, error: errorSupabase } = await supabase.auth.signUp({
-        email: correo.trim(),
-        password: password,
-        options: {
-            data: {
-                display_name: nombre.trim()
-            }
+        if (correo.trim() === '' || password.trim() === '') {
+            error = 'El correo y la contraseña son obligatorios.';
+            return;
         }
-    });
 
-    if (errorSupabase) {
-        error = errorSupabase.message;
-        return;
+        cargando = true;
+
+        const { data, error: errorSupabase } =
+            await supabase.auth.signInWithPassword({
+                email: correo.trim(),
+                password: password
+            });
+
+        cargando = false;
+
+        if (errorSupabase) {
+            error = errorSupabase.message;
+            return;
+        }
+
+        mensaje = 'Inicio de sesión exitoso.';
+
+        await goto('/modulos');
     }
-
-    console.log('Usuario registrado:', data);
-
-    mensaje = 'Registro exitoso. Revisa tu correo electrónico para confirmar tu cuenta.';
-}
 </script>
 
 <svelte:head>
-    <title>Crear cuenta</title>
+    <title>Iniciar sesión</title>
+    <meta
+        name="description"
+        content="Iniciar sesión en la plataforma de aprendizaje"
+    />
 </svelte:head>
 
-<div class="registro-container">
-
-    <div class="registro-card">
-
-        <img src="/logo_th.png" alt="Logo del proyecto" class="logo" />
-        <h1>Crear una cuenta</h1>
+<div class="login-container">
         
+    <div class="login-card">
+        
+        <img src="/logo_th.png" alt="Logo del proyecto" class="logo" />
+        <h1>Iniciar sesión</h1>
+
         <p class="descripcion">
-            Regístrate para comenzar a aprender lengua de señas.
+            Ingresa para continuar aprendiendo lengua de señas.
         </p>
 
-        <form onsubmit={registrarUsuario}>
+        <form onsubmit={iniciarSesion}>
 
             <div class="campo">
-                <label for="nombre">Nombre</label>
-
-                <input
-                    id="nombre"
-                    type="text"
-                    bind:value={nombre}
-                    placeholder="Ingresa tu nombre"
-                />
-            </div>
-
-            <div class="campo">
-                <label for="correo">Correo electrónico</label>
+                <label for="correo">
+                    Correo electrónico
+                </label>
 
                 <input
                     id="correo"
@@ -99,26 +80,15 @@
             </div>
 
             <div class="campo">
-                <label for="password">Contraseña</label>
+                <label for="password">
+                    Contraseña
+                </label>
 
                 <input
                     id="password"
                     type="password"
                     bind:value={password}
                     placeholder="Ingresa tu contraseña"
-                />
-            </div>
-
-            <div class="campo">
-                <label for="confirmarPassword">
-                    Confirmar contraseña
-                </label>
-
-                <input
-                    id="confirmarPassword"
-                    type="password"
-                    bind:value={confirmarPassword}
-                    placeholder="Repite tu contraseña"
                 />
             </div>
 
@@ -134,62 +104,81 @@
                 </div>
             {/if}
 
-            <button type="submit">
-                Crear cuenta
+            <button
+                type="submit"
+                disabled={cargando}
+            >
+                {cargando ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>
 
         </form>
 
-        <p class="login-link">
-            ¿Ya tienes una cuenta?
-            <a href="/login">Inicia sesión</a>
-        </p>
+        <div class="enlaces">
+
+            <a href="/recuperar">
+                ¿Olvidaste tu contraseña?
+            </a>
+
+            <p>
+                ¿No tienes una cuenta?
+                <a href="/registro">Regístrate</a>
+            </p>
+
+        </div>
 
     </div>
 
 </div>
 
 <style>
-    
+    :global(html, body) {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+    }
+
     .logo {
         width: 150px;
         height: auto;
         display: block;
         margin: 0 auto 20px;
     }
-    * {
+    :global(*) {
+        box-sizing: border-box;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    .registro-container {
+    .login-container {
         min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 20px;
-        background: #F4F6F8; /* Fondo Gris Calmo */
+        background: #F4F6F8; /* Gris Calmo de fondo */
     }
 
-    .registro-card {
+    .login-card {
         width: 100%;
         max-width: 450px;
         padding: 35px;
         background: #FFFFFF; /* Blanco Puro */
         border-radius: 12px;
-        border: 1px solid #E2E8F0; /* Borde sutil */
+        border: 1px solid #E2E8F0; /* Borde suave */
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra tenue */
     }
 
     h1 {
         text-align: center;
         margin-bottom: 10px;
-        color: #1E293B; /* Gris Carbón */
+        color: #1E293B;
     }
 
     .descripcion {
         text-align: center;
+        color: #64748B; /* Gris Muted */
         margin-bottom: 25px;
-        color: #64748B; /* Gris Secundario */
         font-size: 14px;
     }
 
@@ -209,7 +198,7 @@
         width: 100%;
         box-sizing: border-box;
         padding: 12px;
-        border: 1px solid #CBD5E1; /* Borde gris suave */
+        border: 1px solid #CBD5E1; /* Borde gris sutil */
         border-radius: 6px;
         font-size: 15px;
         color: #1E293B;
@@ -219,8 +208,8 @@
 
     input:focus {
         outline: none;
-        border-color: #39A900; /* Verde SENA en el foco */
-        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15); /* Anillo suave verde */
+        border-color: #39A900; /* Verde SENA al enfocar */
+        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15); /* Resplandor suave verde */
     }
 
     button {
@@ -228,16 +217,16 @@
         padding: 13px;
         border: none;
         border-radius: 6px;
+        background: #39A900; /* Verde SENA */
+        color: #FFFFFF;
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
-        background: #39A900; /* Verde SENA */
-        color: #FFFFFF;
         transition: background-color 0.2s, transform 0.1s;
     }
 
     button:hover {
-        background: #319200; /* Verde SENA ligeramente más oscuro */
+        background: #319200; /* Verde SENA interacción */
     }
 
     button:active {
@@ -270,20 +259,24 @@
         border: 1px solid #BBF7D0;
     }
 
-    .login-link {
+    .enlaces {
         text-align: center;
         margin-top: 20px;
         font-size: 14px;
-        color: #64748B;
     }
 
-    .login-link a {
-        color: #FC7314; /* Naranja Cálido para resaltar el enlace a Iniciar Sesión */
+    .enlaces a {
+        color: #FC7314; /* Naranja Cálido para accesos/links */
         text-decoration: none;
         font-weight: 600;
     }
 
-    .login-link a:hover {
+    .enlaces a:hover {
         text-decoration: underline;
+    }
+
+    .enlaces p {
+        margin-top: 15px;
+        color: #64748B;
     }
 </style>
