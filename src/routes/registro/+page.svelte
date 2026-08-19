@@ -1,11 +1,10 @@
 <script>
-    import { supabase } from '$lib/supabase';
+    import { supabase } from "$lib/supabaseClient";
 
     let nombre = $state('');
     let correo = $state('');
     let password = $state('');
     let confirmarPassword = $state('');
-
     let error = $state('');
     let mensaje = $state('');
 /**
@@ -41,7 +40,12 @@
 
     const { data, error: errorSupabase } = await supabase.auth.signUp({
         email: correo.trim(),
-        password: password
+        password: password,
+        options: {
+            data: {
+                display_name: nombre.trim()
+            }
+        }
     });
 
     if (errorSupabase) {
