@@ -62,7 +62,7 @@
 <div class="registro-container">
 
     <div class="registro-card">
-
+        <img src="/logo_th.png" alt="Logo del proyecto" class="logo" />
         <h1>Crear una cuenta</h1>
 
         <p class="descripcion">
@@ -145,33 +145,47 @@
 </div>
 
 <style>
+    
+    .logo {
+        width: 150px;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px;
+    }
+    * {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
     .registro-container {
         min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 20px;
-        background: #f4f6f8;
+        background: #F4F6F8; /* Fondo Gris Calmo */
     }
 
     .registro-card {
         width: 100%;
         max-width: 450px;
         padding: 35px;
-        background: white;
+        background: #FFFFFF; /* Blanco Puro */
         border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid #E2E8F0; /* Borde sutil */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra tenue */
     }
 
     h1 {
         text-align: center;
         margin-bottom: 10px;
+        color: #1E293B; /* Gris Carbón */
     }
 
     .descripcion {
         text-align: center;
         margin-bottom: 25px;
-        color: #666;
+        color: #64748B; /* Gris Secundario */
+        font-size: 14px;
     }
 
     .campo {
@@ -182,20 +196,26 @@
         display: block;
         margin-bottom: 7px;
         font-weight: 600;
+        color: #1E293B; /* Gris Carbón */
+        font-size: 14px;
     }
 
     input {
         width: 100%;
         box-sizing: border-box;
         padding: 12px;
-        border: 1px solid #ccc;
+        border: 1px solid #CBD5E1; /* Borde gris suave */
         border-radius: 6px;
         font-size: 15px;
+        color: #1E293B;
+        background-color: #FFFFFF;
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     input:focus {
         outline: none;
-        border-color: #555;
+        border-color: #39A900; /* Verde SENA en el foco */
+        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15); /* Anillo suave verde */
     }
 
     button {
@@ -204,13 +224,25 @@
         border: none;
         border-radius: 6px;
         font-size: 16px;
+        font-weight: 600;
         cursor: pointer;
-        background: #222;
-        color: white;
+        background: #39A900; /* Verde SENA */
+        color: #FFFFFF;
+        transition: background-color 0.2s, transform 0.1s;
     }
 
     button:hover {
-        opacity: 0.9;
+        background: #319200; /* Verde SENA ligeramente más oscuro */
+    }
+
+    button:active {
+        transform: scale(0.99);
+    }
+
+    button:disabled {
+        background: #94A3B8;
+        opacity: 0.6;
+        cursor: not-allowed;
     }
 
     .mensaje {
@@ -218,20 +250,35 @@
         margin-bottom: 15px;
         border-radius: 6px;
         text-align: center;
+        font-size: 14px;
     }
 
     .error {
-        background: #ffe5e5;
-        color: #a00000;
+        background: #FEF2F2;
+        color: #991B1B;
+        border: 1px solid #FECACA;
     }
 
     .exito {
-        background: #e5f7e8;
-        color: #176b2c;
+        background: #F0FDF4;
+        color: #166534;
+        border: 1px solid #BBF7D0;
     }
 
     .login-link {
         text-align: center;
         margin-top: 20px;
+        font-size: 14px;
+        color: #64748B;
+    }
+
+    .login-link a {
+        color: #FC7314; /* Naranja Cálido para resaltar el enlace a Iniciar Sesión */
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
     }
 </style>
