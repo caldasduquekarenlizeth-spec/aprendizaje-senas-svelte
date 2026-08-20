@@ -62,7 +62,7 @@
         <header class="encabezado">
 
             <div class="titulo-modulos">
-                <img src="/logo_th.png" alt="Logo del proyecto" class="logo" />
+                <img src="/logo_th.svg" alt="Logo del proyecto" class="logo" />
 
                 <div class="informacion-usuario">
                     <h1>Módulos de aprendizaje</h1>

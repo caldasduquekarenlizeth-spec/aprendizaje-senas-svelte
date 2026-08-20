@@ -10,8 +10,8 @@
 
 	<header class="encabezado">
 		<div class="marca">
-			<img src="/logo_th.png" alt="Logo Aprendizaje de Señas" class="logo" />
-			<span>Aprendizaje de Señas</span>
+			<img src="/logo_th.svg" alt="Logo Aprendizaje de Señas" class="logo" />
+			<a href="/"><span>Talking Hands</span></a>
 		</div>
 
 		<nav>
@@ -50,7 +50,7 @@
 			<div class="hero-logo">
 				<div class="circulo-logo">
 					<img
-						src="/logo_th.png"
+						src="/logo_th.svg"
 						alt="Aprendizaje de Señas"
 					/>
 				</div>
@@ -108,8 +108,8 @@
 	:global(body) {
 		margin: 0;
 		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-		background: #f4f6f8; /* Fondo Gris Calmo */
-		color: #1e293b; /* Gris Carbón */
+		background: #f4f6f8;
+		color: #1e293b;
 	}
 
 	.pagina-inicio {
@@ -127,6 +127,15 @@
 		border-bottom: 1px solid #e2e8f0;
 	}
 
+	a{
+		text-decoration: none;
+	}
+
+	a:visited {
+		color: inherit;
+		text-decoration: none;
+	}
+
 	.marca {
 		display: flex;
 		align-items: center;
@@ -137,8 +146,8 @@
 	}
 
 	.logo {
-		width: 50px;
-		height: 50px;
+		width: 60px;
+		height: 60px;
 		object-fit: contain;
 	}
 
@@ -155,7 +164,7 @@
 	}
 
 	.enlace-login {
-		color: #39a900; /* Verde SENA */
+		color: #39a900;
 	}
 
 	.enlace-login:hover {
@@ -164,7 +173,7 @@
 
 	.boton-registro {
 		background: #39a900; /* Verde SENA */
-		color: white;
+		color: white !important;
 		padding: 10px 20px;
 		border-radius: 8px;
 	}
@@ -233,7 +242,7 @@
 
 	.boton-principal {
 		background: #39a900; /* Verde SENA */
-		color: white;
+		color: white !important;
 		box-shadow: 0 4px 12px rgba(57, 169, 0, 0.2);
 	}
 

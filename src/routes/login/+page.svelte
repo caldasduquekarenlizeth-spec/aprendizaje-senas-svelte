@@ -9,6 +9,12 @@
     let mensaje = $state('');
     let cargando = $state(false);
 
+    let showPassword = $state(false);
+
+    function togglePassword() {
+        showPassword = !showPassword;
+    }
+
     /**
      * Maneja el inicio de sesión.
      * @param {SubmitEvent} event
@@ -51,13 +57,21 @@
         name="description"
         content="Iniciar sesión en la plataforma de aprendizaje"
     />
+    <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+    />
 </svelte:head>
 
 <div class="login-container">
-        
+    
     <div class="login-card">
+
+        <a href="/" class="btn-home" aria-label="Volver al inicio">
+            <i class="fa-solid fa-house"></i>
+        </a>
         
-        <img src="/logo_th.png" alt="Logo del proyecto" class="logo" />
+        <img src="/logo_th.svg" alt="Logo del proyecto" class="logo" />
         <h1>Iniciar sesión</h1>
 
         <p class="descripcion">
@@ -83,13 +97,23 @@
                 <label for="password">
                     Contraseña
                 </label>
-
-                <input
-                    id="password"
-                    type="password"
-                    bind:value={password}
-                    placeholder="Ingresa tu contraseña"
-                />
+                
+                <div class="input-wrapper">
+                    <input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        bind:value={password}
+                        placeholder="Ingresa tu contraseña"
+                    />
+                    <button
+                        type="button"
+                        class="icon-btn"
+                        onclick={togglePassword}
+                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    >
+                        <i class={showPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}></i>
+                    </button>
+                </div>
             </div>
 
             {#if error}
@@ -151,15 +175,17 @@
     }
 
     .login-container {
+        position: relative;
         min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 20px;
-        background: #F4F6F8; /* Gris Calmo de fondo */
+        background: #F4F6F8;
     }
 
     .login-card {
+        position: relative;
         width: 100%;
         max-width: 450px;
         padding: 35px;
@@ -197,8 +223,8 @@
     input {
         width: 100%;
         box-sizing: border-box;
-        padding: 12px;
-        border: 1px solid #CBD5E1; /* Borde gris sutil */
+        padding: 10px 40px 10px 12px;
+        border: 1px solid #CBD5E1;
         border-radius: 6px;
         font-size: 15px;
         color: #1E293B;
@@ -208,16 +234,53 @@
 
     input:focus {
         outline: none;
-        border-color: #39A900; /* Verde SENA al enfocar */
-        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15); /* Resplandor suave verde */
+        border-color: #39A900;
+        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15);
     }
 
-    button {
+    .input-wrapper{
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .icon-btn {
+        position: absolute;
+        right: 10px;
+        width: auto !important;
+        height: auto !important;
+        background: none !important;
+        border: solid 1px #CBD5E1;
+        border-radius: 4px;
+        cursor: pointer;
+        color: #475569 !important;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: none !important;
+    }
+
+    .icon-btn i {
+        color: #64748B !important;
+    }
+
+    .icon-btn:hover {
+    color: #333;
+    background: transparent !important;
+    }
+
+    .icon-btn:hover i {
+        color: #39A900 !important;
+    }
+
+    button:not(.icon-btn) {
         width: 100%;
         padding: 13px;
         border: none;
         border-radius: 6px;
-        background: #39A900; /* Verde SENA */
+        background: #39A900;
         color: #FFFFFF;
         font-size: 16px;
         font-weight: 600;
@@ -225,18 +288,51 @@
         transition: background-color 0.2s, transform 0.1s;
     }
 
-    button:hover {
+    button:not(.icon-btn):hover {
         background: #319200; /* Verde SENA interacción */
     }
 
-    button:active {
+    button:not(.icon-btn):active {
         transform: scale(0.99);
     }
 
-    button:disabled {
+    button:not(.icon-btn):disabled {
         background: #94A3B8;
         opacity: 0.6;
         cursor: not-allowed;
+    }
+
+    .btn-home {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        background-color: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        color: #64748B;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn-home i {
+        font-size: 16px;
+        color: #64748B;
+        transition: color 0.2s ease;
+    }   
+
+    .btn-home:hover {
+        background-color: #E2E8F0;
+        border-color: #CBD5E1;
+        transform: translateY(-1px);
+    }
+
+    .btn-home:hover i {
+        color: #39A900;
     }
 
     .mensaje {

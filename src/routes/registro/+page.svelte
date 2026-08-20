@@ -7,6 +7,13 @@
     let confirmarPassword = $state('');
     let error = $state('');
     let mensaje = $state('');
+
+    let showPassword = $state(false);
+
+    function togglePassword() {
+        showPassword = !showPassword;
+    }
+
 /**
  * Maneja el envío del formulario de registro.
  * @param {SubmitEvent} event
@@ -61,13 +68,21 @@
 
 <svelte:head>
     <title>Crear cuenta</title>
+    <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+    />
 </svelte:head>
 
 <div class="registro-container">
 
     <div class="registro-card">
 
-        <img src="/logo_th.png" alt="Logo del proyecto" class="logo" />
+        <a href="/" class="btn-home" aria-label="Volver al inicio">
+            <i class="fa-solid fa-house"></i>
+        </a>
+
+        <img src="/logo_th.svg" alt="Logo del proyecto" class="logo" />
         <h1>Crear una cuenta</h1>
         
         <p class="descripcion">
@@ -101,25 +116,44 @@
             <div class="campo">
                 <label for="password">Contraseña</label>
 
-                <input
-                    id="password"
-                    type="password"
-                    bind:value={password}
-                    placeholder="Ingresa tu contraseña"
-                />
+                <div class="input-wrapper">
+                    <input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        bind:value={password}
+                        placeholder="Ingresa tu contraseña"
+                    />
+                    <button
+                        type="button"
+                        class="icon-btn"
+                        onclick={togglePassword}
+                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    >
+                        <i class={showPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}></i>
+                    </button>
+                </div>
             </div>
 
             <div class="campo">
                 <label for="confirmarPassword">
                     Confirmar contraseña
                 </label>
-
-                <input
-                    id="confirmarPassword"
-                    type="password"
-                    bind:value={confirmarPassword}
-                    placeholder="Repite tu contraseña"
-                />
+                <div class="input-wrapper">
+                    <input
+                        id="confirmarPassword"
+                        type={showPassword ? "text" : "password"}
+                        bind:value={confirmarPassword}
+                        placeholder="Repite tu contraseña"
+                    />
+                    <button
+                        type="button"
+                        class="icon-btn"
+                        onclick={togglePassword}
+                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    >
+                        <i class={showPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}></i>
+                    </button>
+                </div>
             </div>
 
             {#if error}
@@ -167,29 +201,30 @@
         justify-content: center;
         align-items: center;
         padding: 20px;
-        background: #F4F6F8; /* Fondo Gris Calmo */
+        background: #F4F6F8;
     }
 
     .registro-card {
+        position: relative;
         width: 100%;
         max-width: 450px;
         padding: 35px;
-        background: #FFFFFF; /* Blanco Puro */
+        background: #FFFFFF;
         border-radius: 12px;
-        border: 1px solid #E2E8F0; /* Borde sutil */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra tenue */
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
     h1 {
         text-align: center;
         margin-bottom: 10px;
-        color: #1E293B; /* Gris Carbón */
+        color: #1E293B;
     }
 
     .descripcion {
         text-align: center;
         margin-bottom: 25px;
-        color: #64748B; /* Gris Secundario */
+        color: #64748B;
         font-size: 14px;
     }
 
@@ -201,15 +236,22 @@
         display: block;
         margin-bottom: 7px;
         font-weight: 600;
-        color: #1E293B; /* Gris Carbón */
+        color: #1E293B;
         font-size: 14px;
+    }
+    
+    .input-wrapper{
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
     }
 
     input {
         width: 100%;
         box-sizing: border-box;
         padding: 12px;
-        border: 1px solid #CBD5E1; /* Borde gris suave */
+        border: 1px solid #CBD5E1;
         border-radius: 6px;
         font-size: 15px;
         color: #1E293B;
@@ -219,8 +261,38 @@
 
     input:focus {
         outline: none;
-        border-color: #39A900; /* Verde SENA en el foco */
-        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15); /* Anillo suave verde */
+        border-color: #39A900;
+        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15);
+    }
+
+    .icon-btn {
+        position: absolute;
+        right: 10px;
+        width: auto !important;
+        height: auto !important;
+        background: none !important;
+        border: solid 1px #CBD5E1;
+        border-radius: 4px;
+        cursor: pointer;
+        color: #475569 !important;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: none !important;
+    }
+
+    .icon-btn i {
+        color: #64748B !important;
+    }
+
+    .icon-btn:hover {
+    color: #333;
+    background: transparent !important;
+    }
+
+    .icon-btn:hover i {
+        color: #39A900 !important;
     }
 
     button {
@@ -231,13 +303,13 @@
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
-        background: #39A900; /* Verde SENA */
+        background: #39A900;
         color: #FFFFFF;
         transition: background-color 0.2s, transform 0.1s;
     }
 
     button:hover {
-        background: #319200; /* Verde SENA ligeramente más oscuro */
+        background: #319200;
     }
 
     button:active {
@@ -248,6 +320,39 @@
         background: #94A3B8;
         opacity: 0.6;
         cursor: not-allowed;
+    }
+
+    .btn-home {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        background-color: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        color: #64748B;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn-home i {
+        font-size: 16px;
+        color: #64748B;
+        transition: color 0.2s ease;
+    }   
+
+    .btn-home:hover {
+        background-color: #E2E8F0;
+        border-color: #CBD5E1;
+        transform: translateY(-1px);
+    }
+
+    .btn-home:hover i {
+        color: #39A900;
     }
 
     .mensaje {
