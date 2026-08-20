@@ -34,15 +34,38 @@
 
         cargando = false;
 
-
         if (errorSupabase) {
             error = errorSupabase.message;
             return;
         }
 
+        // Obtener el perfil y el rol del usuario
+        const { data: perfil, error: errorPerfil } =
+            await supabase
+                .from('perfiles')
+                .select('rol')
+                .eq('id', data.user.id)
+                .single();
+
+        console.log('Usuario autenticado:', data.user);
+        console.log('Perfil obtenido:', perfil);
+        console.log('Error del perfil:', errorPerfil);
+
+        if (errorPerfil) {
+            error = 'No se pudo obtener el rol del usuario.';
+            return;
+        }
+
         mensaje = 'Inicio de sesión exitoso.';
 
-        await goto('/modulos');
+        // Redirigir dependiendo del rol
+        if (perfil.rol === 'admin') {
+            await goto('/admin');
+        } else if (perfil.rol === 'aprendiz') {
+            await goto('/aprendiz');
+        } else {
+            error = 'El usuario no tiene un rol válido.';
+        }
     }
 </script>
 
