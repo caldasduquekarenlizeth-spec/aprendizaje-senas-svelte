@@ -2,4 +2,4 @@
     <title>Aprendiz</title>
 </svelte:head>
 
-<p>Redirigiendo...</p>
+<p>Redirigiendo... </p>
