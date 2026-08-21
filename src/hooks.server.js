@@ -50,5 +50,32 @@ export async function handle({ event, resolve }) {
         }
     }
 
-    return resolve(event);
+    event.locals.safeGetSession = async () => {
+		const {
+			data: { session }
+		} = await event.locals.supabase.auth.getSession();
+
+		if (!session) {
+			return { session: null, user: null };
+		}
+
+		const {
+			data: { user },
+			error
+		} = await event.locals.supabase.auth.getUser();
+
+		if (error) {
+			// El token o la cookie no son válidos/expiraron
+			return { session: null, user: null };
+		}
+
+		return { session, user };
+	};
+
+	return resolve(event, {
+		filterSerializedResponseHeaders(name) {
+			// Necesario para pasar cabeceras de Supabase hacia la respuesta
+			return name === 'content-range' || name === 'x-supabase-api-version';
+		}
+	});
 }

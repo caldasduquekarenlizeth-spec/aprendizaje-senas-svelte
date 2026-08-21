@@ -1,11 +1,12 @@
 <script>
-	import favicon from '$lib/assets/favicon.svg';
+	let { data, children } = $props();
 
-	let { children } = $props();
+	// Creamos un estado reactivo con $derived para saber si hay sesión activa
+	let user = $derived(data.user);
 </script>
 
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
+<nav>
+	
+</nav>
 
 {@render children()}

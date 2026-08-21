@@ -8,6 +8,7 @@ let confirmarPassword = $state('');
 let mensaje = $state('');
 let error = $state('');
 let cargando = $state(false);
+let showPassword = $state(false);
 
 let verificandoEnlace = $state(true);
 let enlaceInvalido = $state(false);
@@ -74,6 +75,9 @@ async function recuperarCuenta(event) {
     }, 2500);
 }
 
+function togglePassword() {
+    showPassword = !showPassword;
+}
 </script>
 
 <svelte:head>
@@ -81,6 +85,10 @@ async function recuperarCuenta(event) {
     <meta
         name="description"
         content="Recuperar contraseña por medio de correo electrónico"
+    />
+    <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
     />
 </svelte:head>
 
@@ -114,12 +122,23 @@ async function recuperarCuenta(event) {
             <div class="campo">
                 <label for="password">Contraseña</label>
 
+                <div class="input-wrapper">
                 <input
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
+                    required
                     bind:value={new_password}
-                    placeholder="Ingresa tu contraseña"
+                    placeholder="Ingresa tu nueva contraseña"
                 />
+                    <button
+                        type="button"
+                        class="icon-btn"
+                        onclick={togglePassword}
+                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    >
+                        <i class={showPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}></i>
+                    </button>
+                </div>
             </div>
 
             <div class="campo">
@@ -127,12 +146,23 @@ async function recuperarCuenta(event) {
                     Confirmar contraseña
                 </label>
 
+                <div class="input-wrapper">
                 <input
                     id="confirmarPassword"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
+                    required
                     bind:value={confirmarPassword}
                     placeholder="Repite tu contraseña"
                 />
+                    <button
+                        type="button"
+                        class="icon-btn"
+                        onclick={togglePassword}
+                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    >
+                        <i class={showPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}></i>
+                    </button>
+                </div>
             </div>
 
             {#if error}
@@ -160,6 +190,7 @@ async function recuperarCuenta(event) {
 
 <style>
     .recover-container {
+        position:relative;
         min-height: 100vh;
         display: flex;
         justify-content: center;
@@ -169,13 +200,14 @@ async function recuperarCuenta(event) {
     }
 
     .recovery-card {
+        position: relative;
         width: 100%;
         max-width: 450px;
         padding: 35px;
-        background: #FFFFFF;
+        background: #FFFFFF; /* Blanco Puro */
         border-radius: 12px;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid #E2E8F0; /* Borde suave */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra tenue */
     }
 
     h1 {
@@ -221,12 +253,49 @@ async function recuperarCuenta(event) {
         box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15); /* Resplandor suave verde */
     }
 
-    button {
+    .input-wrapper{
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    }
+
+    .icon-btn i {
+    color: #64748B !important;
+    }
+
+    .icon-btn {
+    position: absolute;
+    right: 10px;
+    width: auto !important;
+    height: auto !important;
+    background: none !important;
+    border: solid 1px #CBD5E1;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #475569 !important;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: none !important;
+}
+
+    .icon-btn:hover {
+        color: #333;
+        background: transparent !important;
+    }
+
+    .icon-btn:hover i {
+        color: #39A900 !important;
+    }
+
+    button:not(.icon-btn) {
         width: 100%;
         padding: 13px;
         border: none;
         border-radius: 6px;
-        background: #39A900; /* Verde SENA */
+        background: #39A900;
         color: #FFFFFF;
         font-size: 16px;
         font-weight: 600;
@@ -234,15 +303,15 @@ async function recuperarCuenta(event) {
         transition: background-color 0.2s, transform 0.1s;
     }
 
-    button:hover {
-        background: #319200; /* Verde SENA interacción */
+    button:not(.icon-btn):hover {
+        background: #319200;
     }
 
-    button:active {
+    button:not(.icon-btn):active {
         transform: scale(0.99);
     }
 
-    button:disabled {
+    button:not(.icon-btn):disabled {
         background: #94A3B8;
         opacity: 0.6;
         cursor: not-allowed;
