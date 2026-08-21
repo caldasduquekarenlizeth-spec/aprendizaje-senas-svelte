@@ -1,5 +1,5 @@
 <script>
-    import { supabase } from '$lib/supabaseClient';
+    import { supabase } from '$lib/supabase';
     import { goto } from '$app/navigation';
 
     let { children } = $props();
@@ -130,7 +130,7 @@
 
 
     /* =========================
-        SIDEBAR
+       SIDEBAR
     ========================= */
 
     .sidebar {

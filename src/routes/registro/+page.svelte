@@ -1,19 +1,14 @@
 <script>
-    import { supabase } from "$lib/supabaseClient";
+    import { supabase } from '$lib/supabase';
 
     let nombre = $state('');
     let correo = $state('');
     let password = $state('');
     let confirmarPassword = $state('');
-    let error = $state('');
-    let mensaje = $state('');
 
     let showPassword = $state(false);
-
-    function togglePassword() {
-        showPassword = !showPassword;
-    }
-
+    let error = $state('');
+    let mensaje = $state('');
 /**
  * Maneja el envío del formulario de registro.
  * @param {SubmitEvent} event
@@ -47,12 +42,7 @@
 
     const { data, error: errorSupabase } = await supabase.auth.signUp({
         email: correo.trim(),
-        password: password,
-        options: {
-            data: {
-                display_name: nombre.trim()
-            }
-        }
+        password: password
     });
 
     if (errorSupabase) {
@@ -64,27 +54,29 @@
 
     mensaje = 'Registro exitoso. Revisa tu correo electrónico para confirmar tu cuenta.';
 }
+
+    function togglePassword() {
+        showPassword = !showPassword;
+    }
 </script>
 
 <svelte:head>
     <title>Crear cuenta</title>
     <link 
-    rel="stylesheet" 
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
     />
 </svelte:head>
 
 <div class="registro-container">
 
     <div class="registro-card">
-
         <a href="/" class="btn-home" aria-label="Volver al inicio">
             <i class="fa-solid fa-house"></i>
         </a>
-
         <img src="/logo_th.svg" alt="Logo del proyecto" class="logo" />
         <h1>Crear una cuenta</h1>
-        
+
         <p class="descripcion">
             Regístrate para comenzar a aprender lengua de señas.
         </p>
@@ -114,15 +106,17 @@
             </div>
 
             <div class="campo">
-                <label for="password">Contraseña</label>
+                <label for="password">
+                    Contraseña
+                </label>
 
                 <div class="input-wrapper">
-                    <input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        bind:value={password}
-                        placeholder="Ingresa tu contraseña"
-                    />
+                <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    bind:value={password}
+                    placeholder="Ingresa tu contraseña"
+                />
                     <button
                         type="button"
                         class="icon-btn"
@@ -138,13 +132,14 @@
                 <label for="confirmarPassword">
                     Confirmar contraseña
                 </label>
+
                 <div class="input-wrapper">
-                    <input
-                        id="confirmarPassword"
-                        type={showPassword ? "text" : "password"}
-                        bind:value={confirmarPassword}
-                        placeholder="Repite tu contraseña"
-                    />
+                <input
+                    id="confirmarPassword"
+                    type={showPassword ? "text" : "password"}
+                    bind:value={confirmarPassword}
+                    placeholder="Repite tu contraseña"
+                />
                     <button
                         type="button"
                         class="icon-btn"
@@ -196,12 +191,13 @@
     }
 
     .registro-container {
+        position: relative;
         min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 20px;
-        background: #F4F6F8;
+        background: #F4F6F8; /* Fondo Gris Calmo */
     }
 
     .registro-card {
@@ -209,22 +205,22 @@
         width: 100%;
         max-width: 450px;
         padding: 35px;
-        background: #FFFFFF;
+        background: #FFFFFF; /* Blanco Puro */
         border-radius: 12px;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid #E2E8F0; /* Borde sutil */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra tenue */
     }
 
     h1 {
         text-align: center;
         margin-bottom: 10px;
-        color: #1E293B;
+        color: #1E293B; /* Gris Carbón */
     }
 
     .descripcion {
         text-align: center;
         margin-bottom: 25px;
-        color: #64748B;
+        color: #64748B; /* Gris Secundario */
         font-size: 14px;
     }
 
@@ -236,22 +232,15 @@
         display: block;
         margin-bottom: 7px;
         font-weight: 600;
-        color: #1E293B;
+        color: #1E293B; /* Gris Carbón */
         font-size: 14px;
-    }
-    
-    .input-wrapper{
-        position: relative;
-        display: flex;
-        align-items: center;
-        width: 100%;
     }
 
     input {
         width: 100%;
         box-sizing: border-box;
         padding: 12px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid #CBD5E1; /* Borde gris suave */
         border-radius: 6px;
         font-size: 15px;
         color: #1E293B;
@@ -261,62 +250,69 @@
 
     input:focus {
         outline: none;
-        border-color: #39A900;
-        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15);
+        border-color: #39A900; /* Verde SENA en el foco */
+        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15); /* Anillo suave verde */
     }
 
-    .icon-btn {
-        position: absolute;
-        right: 10px;
-        width: auto !important;
-        height: auto !important;
-        background: none !important;
-        border: solid 1px #CBD5E1;
-        border-radius: 4px;
-        cursor: pointer;
-        color: #475569 !important;
-        padding: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform: none !important;
+    .input-wrapper{
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
     }
 
     .icon-btn i {
-        color: #64748B !important;
+    color: #64748B !important;
     }
 
+    .icon-btn {
+    position: absolute;
+    right: 10px;
+    width: auto !important;
+    height: auto !important;
+    background: none !important;
+    border: solid 1px #CBD5E1;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #475569 !important;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: none !important;
+}
+
     .icon-btn:hover {
-    color: #333;
-    background: transparent !important;
+        color: #333;
+        background: transparent !important;
     }
 
     .icon-btn:hover i {
         color: #39A900 !important;
     }
 
-    button {
+    button:not(.icon-btn) {
         width: 100%;
         padding: 13px;
         border: none;
         border-radius: 6px;
+        background: #39A900;
+        color: #FFFFFF;
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
-        background: #39A900;
-        color: #FFFFFF;
         transition: background-color 0.2s, transform 0.1s;
     }
 
-    button:hover {
+    button:not(.icon-btn):hover {
         background: #319200;
     }
 
-    button:active {
+    button:not(.icon-btn):active {
         transform: scale(0.99);
     }
 
-    button:disabled {
+    button:not(.icon-btn):disabled {
         background: #94A3B8;
         opacity: 0.6;
         cursor: not-allowed;
@@ -353,6 +349,33 @@
 
     .btn-home:hover i {
         color: #39A900;
+    }
+    
+    button {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        background: #39A900; /* Verde SENA */
+        color: #FFFFFF;
+        transition: background-color 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+        background: #319200; /* Verde SENA ligeramente más oscuro */
+    }
+
+    button:active {
+        transform: scale(0.99);
+    }
+
+    button:disabled {
+        background: #94A3B8;
+        opacity: 0.6;
+        cursor: not-allowed;
     }
 
     .mensaje {

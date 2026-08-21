@@ -1,28 +1,19 @@
+import { redirect } from '@sveltejs/kit';
 
-export const load = async ({locals}) => {
-        const {data:usuarios} = await locals.supabase
-        .from('profiles')
-        .select('id,nombre,email,rol,created_at')
-        .order('created_at', {ascending:false});
+export async function load({ locals }) {
 
-        return { usuarios };
-    };
-
-    export const actions = {
-        updateRole: async ({ request, locals }) => {
-            const formData = await request.formData();
-            const userId = formData.get('userId');
-            const newRole = formData.get('role'); //admin o aprendiz
-
-            const { error } = await locals.supabase
-                .from('profiles')
-                .update({ rol: newRole })
-                .eq('id', userId);
-            
-                if (error) {
-                    return { success: false, error:error.message };
-                }
-
-                return {success: true};
-        }
+    // No está autenticado
+    if (!locals.user) {
+        throw redirect(303, '/login');
     }
+
+    // Está autenticado pero no es administrador
+    if (locals.rol !== 'admin') {
+        throw redirect(303, '/aprendiz');
+    }
+
+    return {
+        user: locals.user,
+        rol: locals.rol
+    };
+}

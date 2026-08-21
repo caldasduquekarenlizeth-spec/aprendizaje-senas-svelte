@@ -1,7 +1,5 @@
 <svelte:head>
     <title>Usuarios | Administrador</title>
-
-    
 </svelte:head>
 
 <h1>Gestión de usuarios</h1>

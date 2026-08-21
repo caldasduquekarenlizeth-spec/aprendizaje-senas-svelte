@@ -1,83 +1,86 @@
 <script>
-import { onMount } from 'svelte';
-import { goto } from '$app/navigation';
-import { supabase } from '$lib/supabaseClient';
-import { invalidateAll } from '$app/navigation';
+    import { supabase } from '$lib/supabase';
+    import { goto } from '$app/navigation';
 
-let correo = $state('');
-let password = $state('');
-let mensajeError = $state('');
-let showPassword = $state(false);
-let cargando = $state(false);
+    let correo = $state('');
+    let password = $state('');
 
-async function redirigirSegunRol(userId) {
-    const { data: perfil, error } = await supabase
-        .from('profiles')
-        .select('rol')
-        .eq('id', userId)
-        .single();
+    let error = $state('');
+    let mensaje = $state('');
+    let showPassword = $state(false);
+    let cargando = $state(false);
 
-    if (error || !perfil) {
-        console.error('Error al obtener perfil:', error);
-        throw new Error('Error al consultar el rol en la base de datos.');
-    }
+    /**
+     * Maneja el inicio de sesión.
+     * @param {SubmitEvent} event
+     */
+    async function iniciarSesion(event) {
+        event.preventDefault();
 
-    await invalidateAll();
+        error = '';
+        mensaje = '';
 
-    if (perfil.rol === 'admin') {
-        await goto('/admin');
-    } else {
-        await goto('/aprendiz');
-    }
-}
-
-onMount(async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-        try {
-            await redirigirSegunRol(session.user.id);
-        } catch (e) {
-            console.error('Error en autologin:', e);
+        if (correo.trim() === '' || password.trim() === '') {
+            error = 'El correo y la contraseña son obligatorios.';
+            return;
         }
-    }
-});
 
-function togglePassword() {
-    showPassword = !showPassword;
-}
+        cargando = true;
 
-async function manejarLogin(event) {
-    event.preventDefault();
-    cargando = true;
-    mensajeError = '';
+        const { data, error: errorSupabase } =
+            await supabase.auth.signInWithPassword({
+                email: correo.trim(),
+                password: password
+            });
 
-    try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: correo,
-            password: password
-        });
-
-        if (error) {
-            mensajeError = error.message === 'Invalid login credentials' 
-                ? 'Correo o contraseña incorrectos.' 
-                : error.message;
-        } else if (data.session) {
-            await supabase.auth.setSession(data.session);
-            await redirigirSegunRol(data.session.user.id);
-        }
-    } catch (e) {
-        mensajeError = e.message || 'Ocurrió un error inesperado.';
-        console.error('Detalle del error:', e);
-    } finally {
         cargando = false;
+
+        if (errorSupabase) {
+            error = errorSupabase.message;
+            return;
+        }
+
+        // Obtener el perfil y el rol del usuario
+        const { data: perfil, error: errorPerfil } =
+            await supabase
+                .from('perfiles')
+                .select('rol')
+                .eq('id', data.user.id)
+                .single();
+
+        console.log('Usuario autenticado:', data.user);
+        console.log('Perfil obtenido:', perfil);
+        console.log('Error del perfil:', errorPerfil);
+
+        if (errorPerfil) {
+            error = 'No se pudo obtener el rol del usuario.';
+            return;
+        }
+
+        mensaje = 'Inicio de sesión exitoso.';
+
+        // Redirigir dependiendo del rol
+        if (perfil.rol === 'admin') {
+            await goto('/admin');
+        } else if (perfil.rol === 'aprendiz') {
+            await goto('/aprendiz');
+        } else {
+            error = 'El usuario no tiene un rol válido.';
+        }
     }
+
+    function togglePassword() {
+    showPassword = !showPassword;
 }
 </script>
 
 <svelte:head>
-<title>Iniciar sesión</title>
-<meta name="description" content="Iniciar sesión en la plataforma de aprendizaje" />
-<link 
+    <title>Iniciar sesión</title>
+    <meta
+        name="description"
+        content="Iniciar sesión en la plataforma de aprendizaje"
+    />
+    <link 
     rel="stylesheet" 
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
     />
@@ -85,76 +88,83 @@ async function manejarLogin(event) {
 
 <div class="login-container">
     <div class="login-card">
-    <a href="/" class="btn-home" aria-label="Volver al inicio">
-        <i class="fa-solid fa-house"></i>
-    </a>
-    
-    <img src="/logo_th.svg" alt="Logo del proyecto" class="logo" />
-    <h1>Iniciar sesión</h1>
+        <a href="/" class="btn-home" aria-label="Volver al inicio">
+            <i class="fa-solid fa-house"></i>
+        </a>
 
-    <p class="descripcion">
-        Ingresa para continuar aprendiendo lengua de señas.
-    </p>
+        <img src="/logo_th.svg" alt="Logo del proyecto" class="logo" />
+        <h1>Iniciar sesión</h1>
 
-    <form onsubmit={manejarLogin}>
-        <div class="campo">
-            <label for="correo">
-                Correo electrónico
-            </label>
+        <p class="descripcion">
+            Ingresa para continuar aprendiendo lengua de señas.
+        </p>
 
-            <input
-                id="correo"
-                type="email"
-                name="correo"
-                bind:value={correo}
-                placeholder="ejemplo@correo.com"
-                required
-            />
-        </div>
+        <form onsubmit={iniciarSesion}>
 
-        <div class="campo">
-            <label for="password">
-                Contraseña
-            </label>
-            
-            <div class="input-wrapper">
+            <div class="campo">
+                <label for="correo">
+                    Correo electrónico
+                </label>
+
                 <input
-                id="password"
-                name="password"
-                bind:value={password}
-                type={showPassword ? "text" : "password"}
-                required
-                placeholder="Ingresa tu contraseña"
-            />
-                <button
-                type="button"
-                class="icon-btn"
-                onclick={togglePassword}
-                aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
-            >
-                <i class={showPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}></i>
-                </button>
+                    id="correo"
+                    type="email"
+                    bind:value={correo}
+                    placeholder="ejemplo@correo.com"
+                    required
+                />
             </div>
-        </div>
 
-    {#if mensajeError}
-        <div class="mensaje error">
-            {mensajeError}
-        </div>
-    {/if}
+            <div class="campo">
+                <label for="password">
+                    Contraseña
+                </label>
 
-        <button
-        type="submit"
-        disabled={cargando}
-    >
-        {cargando ? 'Iniciando sesión...' : 'Iniciar sesión'}
-        </button>
-    </form>
+                <div class="input-wrapper">
+                <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    bind:value={password}
+                    placeholder="Ingresa tu contraseña"
+                />
+                    <button
+                        type="button"
+                        class="icon-btn"
+                        onclick={togglePassword}
+                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    >
+                        <i class={showPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}></i>
+                    </button>
+                </div>
+            </div>
+
+            {#if error}
+                <div class="mensaje error">
+                    {error}
+                </div>
+            {/if}
+
+            {#if mensaje}
+                <div class="mensaje exito">
+                    {mensaje}
+                </div>
+            {/if}
+
+            <button
+                type="submit"
+                disabled={cargando}
+            >
+                {cargando ? 'Iniciando sesión...' : 'Iniciar sesión'}
+            </button>
+
+        </form>
 
         <div class="enlaces">
-        <a href="/recuperar">
-            ¿Olvidaste tu contraseña?
-        </a>
+
+            <a href="/recuperar">
+                ¿Olvidaste tu contraseña?
+            </a>
 
             <p>
                 ¿No tienes una cuenta?
@@ -165,98 +175,99 @@ async function manejarLogin(event) {
 </div>
 
 <style>
-:global(html, body) {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-}
+    :global(html, body) {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+    }
+    .logo {
+        width: 150px;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px;
+    }
+    * {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
-.logo {
-    width: 150px;
-    height: auto;
-    display: block;
-    margin: 0 auto 20px;
-}
+    .login-container {
+        position:relative;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: #F4F6F8;
+    }
 
-:global(*) {
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
+    .login-card {
+        position: relative;
+        width: 100%;
+        max-width: 450px;
+        padding: 35px;
+        background: #FFFFFF; /* Blanco Puro */
+        border-radius: 12px;
+        border: 1px solid #E2E8F0; /* Borde suave */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra tenue */
+    }
 
-.login-container {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background: #F4F6F8;
-}
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #1E293B; /* Gris Carbón */
+    }
 
-.login-card {
-    position: relative;
-    width: 100%;
-    max-width: 450px;
-    padding: 35px;
-    background: #FFFFFF;
-    border-radius: 12px;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
+    .descripcion {
+        text-align: center;
+        color: #64748B; /* Gris Muted */
+        margin-bottom: 25px;
+        font-size: 14px;
+    }
 
-h1 {
-    text-align: center;
-    margin-bottom: 10px;
-    color: #1E293B;
-}
+    .campo {
+        margin-bottom: 18px;
+    }
 
-.descripcion {
-    text-align: center;
-    color: #64748B;
-    margin-bottom: 25px;
-    font-size: 14px;
-}
+    label {
+        display: block;
+        margin-bottom: 7px;
+        font-weight: 600;
+        color: #1E293B; /* Gris Carbón */
+        font-size: 14px;
+    }
 
-.campo {
-    margin-bottom: 18px;
-}
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #CBD5E1; /* Borde gris sutil */
+        border-radius: 6px;
+        font-size: 15px;
+        color: #1E293B;
+        background-color: #FFFFFF;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
 
-label {
-    display: block;
-    margin-bottom: 7px;
-    font-weight: 600;
-    color: #1E293B;
-    font-size: 14px;
-}
+    input:focus {
+        outline: none;
+        border-color: #39A900; /* Verde SENA al enfocar */
+        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15); /* Resplandor suave verde */
+    }
 
-input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px 40px 10px 12px;
-    border: 1px solid #CBD5E1;
-    border-radius: 6px;
-    font-size: 15px;
-    color: #1E293B;
-    background-color: #FFFFFF;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input:focus {
-    outline: none;
-    border-color: #39A900;
-    box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15);
-}
-
-.input-wrapper{
+    .input-wrapper{
     position: relative;
     display: flex;
     align-items: center;
     width: 100%;
-}
+    }
 
-.icon-btn {
+    .icon-btn i {
+    color: #64748B !important;
+    }
+
+    .icon-btn {
     position: absolute;
     right: 10px;
     width: auto !important;
@@ -273,111 +284,139 @@ input:focus {
     transform: none !important;
 }
 
-.icon-btn i {
-    color: #64748B !important;
-}
+    .icon-btn:hover {
+        color: #333;
+        background: transparent !important;
+    }
 
-.icon-btn:hover {
-    color: #333;
-    background: transparent !important;
-}
+    .icon-btn:hover i {
+        color: #39A900 !important;
+    }
 
-.icon-btn:hover i {
-    color: #39A900 !important;
-}
+    button:not(.icon-btn) {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 6px;
+        background: #39A900;
+        color: #FFFFFF;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+    }
 
-button:not(.icon-btn) {
-    width: 100%;
-    padding: 13px;
-    border: none;
-    border-radius: 6px;
-    background: #39A900;
-    color: #FFFFFF;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-}
+    button:not(.icon-btn):hover {
+        background: #319200;
+    }
 
-button:not(.icon-btn):hover {
-    background: #319200;
-}
+    button:not(.icon-btn):active {
+        transform: scale(0.99);
+    }
 
-button:not(.icon-btn):active {
-    transform: scale(0.99);
-}
+    button:not(.icon-btn):disabled {
+        background: #94A3B8;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
 
-button:not(.icon-btn):disabled {
-    background: #94A3B8;
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+    .btn-home {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        background-color: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        color: #64748B;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
 
-.btn-home {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    background-color: #F8FAFC;
-    border: 1px solid #E2E8F0;
-    color: #64748B;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
+    .btn-home i {
+        font-size: 16px;
+        color: #64748B;
+        transition: color 0.2s ease;
+    }   
 
-.btn-home i {
-    font-size: 16px;
-    color: #64748B;
-    transition: color 0.2s ease;
-}   
+    .btn-home:hover {
+        background-color: #E2E8F0;
+        border-color: #CBD5E1;
+        transform: translateY(-1px);
+    }
 
-.btn-home:hover {
-    background-color: #E2E8F0;
-    border-color: #CBD5E1;
-    transform: translateY(-1px);
-}
+    .btn-home:hover i {
+        color: #39A900;
+    }
+    button {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 6px;
+        background: #39A900; /* Verde SENA */
+        color: #FFFFFF;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+    }
 
-.btn-home:hover i {
-    color: #39A900;
-}
+    button:hover {
+        background: #319200; /* Verde SENA interacción */
+    }
 
-.mensaje {
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 14px;
-}
+    button:active {
+        transform: scale(0.99);
+    }
 
-.error {
-    background: #FEF2F2;
-    color: #991B1B;
-    border: 1px solid #FECACA;
-}
+    button:disabled {
+        background: #94A3B8;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
 
-.enlaces {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-}
+    .mensaje {
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        text-align: center;
+        font-size: 14px;
+    }
 
-.enlaces a {
-    color: #FC7314;
-    text-decoration: none;
-    font-weight: 600;
-}
+    .error {
+        background: #FEF2F2;
+        color: #991B1B;
+        border: 1px solid #FECACA;
+    }
 
-.enlaces a:hover {
-    text-decoration: underline;
-}
+    .exito {
+        background: #F0FDF4;
+        color: #166534;
+        border: 1px solid #BBF7D0;
+    }
 
-.enlaces p {
-    margin-top: 15px;
-    color: #64748B;
-}
+    .enlaces {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .enlaces a {
+        color: #FC7314; /* Naranja Cálido para accesos/links */
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .enlaces a:hover {
+        text-decoration: underline;
+    }
+
+    .enlaces p {
+        margin-top: 15px;
+        color: #64748B;
+    }
 </style>
