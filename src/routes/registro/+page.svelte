@@ -41,7 +41,12 @@
 
     const { data, error: errorSupabase } = await supabase.auth.signUp({
         email: correo.trim(),
-        password: password
+        password: password,
+        options: {
+            data: {
+                nombre: nombre.trim()
+            }
+        }
     });
 
     if (errorSupabase) {
