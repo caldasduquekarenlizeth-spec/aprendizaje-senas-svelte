@@ -40,7 +40,7 @@ export async function handle({ event, resolve }) {
 
     if (user) {
         const { data: perfil } = await event.locals.supabase
-            .from('perfiles')
+            .from('profiles')
             .select('rol')
             .eq('id', user.id)
             .single();

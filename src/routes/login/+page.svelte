@@ -43,7 +43,7 @@
         // Obtener el perfil y el rol del usuario
         const { data: perfil, error: errorPerfil } =
             await supabase
-                .from('perfiles')
+                .from('profiles')
                 .select('rol')
                 .eq('id', data.user.id)
                 .single();
