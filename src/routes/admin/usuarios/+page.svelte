@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 <script>
     import { enhance } from '$app/forms';
     import { supabase } from '$lib/supabaseClient';
@@ -65,18 +63,12 @@ async function eliminarUsuario(idUsuario) {
 }
 </script>
 
->>>>>>> Stashed changes
 <svelte:head>
     <title>Usuarios | Administrador</title>
 </svelte:head>
 
 <h1>Gestión de usuarios</h1>
 
-<<<<<<< Updated upstream
-<p>
-    Aquí administraremos los usuarios de la plataforma.
-</p>
-=======
 <div class="usuarios-page">
 
     <div class="page-header">
@@ -1009,5 +1001,4 @@ async function eliminarUsuario(idUsuario) {
         background: #2f8f00;
     }
 
-    </style>
->>>>>>> Stashed changes
+</style>
