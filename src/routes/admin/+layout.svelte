@@ -12,8 +12,117 @@
 
 <div class="admin-layout">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <!-- =========================
+            BARRA DE NAVEGACIÓN
+    ========================= -->
+
+    <header class="navbar">
+
+        <!-- LOGO -->
+        <a href="/admin" class="brand">
+
+            <img
+                src="/logo_th.svg"
+                alt="Logo de Talking Hands"
+            />
+
+            <span class="brand-name">
+                Talking Hands
+            </span>
+
+        </a>
+
+
+        <!-- =========================
+                NAVEGACIÓN
+        ========================= -->
+
+        <nav class="navigation">
+    
+            <!-- INICIO -->
+            <a
+                href="/admin"
+                class="nav-link"
+            >
+                Inicio
+            </a>
+        
+        
+            <!-- GESTIONAR -->
+            <details class="dropdown">
+        
+                <summary class="nav-link dropdown-button">
+                    Gestionar
+                    <span class="arrow"></span>
+                </summary>
+        
+        
+                <div class="dropdown-menu">
+        
+                    <a href="/admin/usuarios">
+                        Usuarios
+                    </a>
+        
+                    <a href="/admin/modulos">
+                        Módulos
+                    </a>
+        
+                    <a href="/admin/logros">
+                        Logros
+                    </a>
+        
+                </div>
+        
+            </details>
+        
+        
+            <!-- PERFIL -->
+            <a
+                href="/admin/perfil"
+                class="nav-link"
+            >
+                Perfil
+            </a>
+        
+        
+            <!-- RANKING -->
+            <a
+                href="/admin/ranking"
+                class="nav-link"
+            >
+                Ranking
+            </a>
+    
+    </nav>
+    
+
+        <!-- =========================
+                FOTO DE PERFIL
+        ========================= -->
+
+        <div class="profile-container">
+
+            <a
+                href="/admin/perfil"
+                class="profile-link"
+                aria-label="Ir al perfil"
+            >
+
+                <!--
+                    Por ahora usamos el logo como imagen
+                    temporal de perfil.
+                    Posteriormente podemos reemplazar
+                    esta imagen por la foto del usuario
+                    almacenada en Supabase.
+                -->
+
+                <img
+                    src="/logo_th.svg"
+                    alt="Foto de perfil"
+                    class="profile-image"
+                />
+
+            </a>
 
         <div class="logo-container">
             <img src="/logo_th.svg" alt="Logo de Talking Hands" />
@@ -58,8 +167,9 @@
     </aside>
 
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <div class="main">
+    <!-- =========================
+            CONTENIDO PRINCIPAL
+    ========================= -->
 
         <header class="topbar">
             <div>
@@ -93,7 +203,7 @@
     }
 
     /* =========================
-       ESTRUCTURA
+        ESTRUCTURA
     ========================= */
     .admin-layout {
         min-height: 100vh;
@@ -101,7 +211,7 @@
     }
 
     /* =========================
-       SIDEBAR
+        BARRA SUPERIOR
     ========================= */
     .sidebar {
         width: 250px;
@@ -114,6 +224,15 @@
         left: 0;
         bottom: 0;
 
+        z-index: 1000;
+    }
+
+
+    /* =========================
+        MARCA / LOGO
+    ========================= */
+
+    .brand {
         display: flex;
         flex-direction: column;
         border-right: 1px solid rgba(255, 255, 255, 0.05);
@@ -150,7 +269,7 @@
     }
 
     /* =========================
-       NAVEGACIÓN
+        NAVEGACIÓN
     ========================= */
     .sidebar-element {
         display: flex;
@@ -167,7 +286,121 @@
         border-radius: 8px;
         color: #E2E8F0;
         text-decoration: none;
-        font-size: 15px;
+
+        font-family: inherit;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+    }
+
+
+    .nav-link:hover {
+        background: rgba(57, 169, 0, 0.10);
+
+        color: #39A900;
+    }
+
+
+    /* =========================
+        GESTIONAR
+    ========================= */
+
+    .dropdown {
+    position: relative;
+    }
+    
+    
+    /* Quitar el marcador predeterminado de details */
+    .dropdown summary {
+        list-style: none;
+    }
+    
+    
+    /* Compatibilidad con algunos navegadores */
+    .dropdown summary::-webkit-details-marker {
+        display: none;
+    }
+    
+    
+    .dropdown-button {
+        justify-content: center;
+    
+        user-select: none;
+    }
+    
+    
+    /* Flecha */
+    .arrow {
+        width: 7px;
+    
+        height: 7px;
+    
+        margin-left: 4px;
+    
+        border-right: 1.5px solid #64748B;
+    
+        border-bottom: 1.5px solid #64748B;
+    
+        transform: rotate(45deg) translateY(-2px);
+    
+        transition: transform 0.2s ease;
+    }
+    
+    
+    /* Cuando el menú está abierto */
+    .dropdown[open] .arrow {
+        transform: rotate(225deg) translateY(-2px);
+    }
+
+    /* =========================
+        MENÚ DESPLEGABLE
+    ========================= */
+
+    .dropdown-menu {
+        position: absolute;
+
+        top: 50px;
+
+        left: 0;
+
+        min-width: 180px;
+
+        padding: 7px;
+
+        background: #FFFFFF;
+
+        border:
+            1px solid #E2E8F0;
+
+        border-radius: 10px;
+
+        box-shadow:
+            0 8px 24px rgba(15, 23, 42, 0.12);
+
+        z-index: 1100;
+    }
+
+
+    .dropdown-menu a {
+        display: block;
+
+        padding: 11px 13px;
+
+        border-radius: 7px;
+
+        color: #1E293B;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
         font-weight: 500;
         transition: background 0.2s, color 0.2s, transform 0.2s;
     }
@@ -185,7 +418,7 @@
     }
 
     /* =========================
-       BOTÓN CERRAR SESIÓN
+        FOTO DE PERFIL
     ========================= */
     .sidebar-bottom {
         margin-top: auto;
@@ -217,7 +450,7 @@
     }
 
     /* =========================
-       CONTENIDO PRINCIPAL
+        CONTENIDO
     ========================= */
     .main {
         margin-left: 250px;
@@ -258,7 +491,7 @@
     }
 
     /* =========================
-       RESPONSIVE (Acomodo Automático)
+        RESPONSIVE
     ========================= */
     @media (max-width: 768px) {
         .sidebar {
