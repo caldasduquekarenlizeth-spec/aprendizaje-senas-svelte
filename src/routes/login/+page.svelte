@@ -203,7 +203,7 @@
     }
 
     .login-card {
-        position: relative;
+        position: absolute;
         width: 100%;
         max-width: 450px;
         padding: 35px;

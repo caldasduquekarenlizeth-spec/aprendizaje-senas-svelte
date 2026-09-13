@@ -5,7 +5,7 @@
     let { data, form } = $props();
 
     let busqueda = $state('');
-    let usuarioEditando = $state({});
+    let usuarioEditando = $state(null);
 
     let usuariosFiltrados = $derived(
         data.usuarios.filter((usuario) =>
@@ -28,7 +28,7 @@
     }
 
     function cancelarEdicion() {
-        usuarioEditando = {};
+        usuarioEditando = null;
     }
 
 /**
@@ -62,6 +62,7 @@ async function eliminarUsuario(idUsuario) {
     }
 }
 </script>
+
 
 <svelte:head>
     <title>Usuarios | Administrador</title>
@@ -119,11 +120,10 @@ async function eliminarUsuario(idUsuario) {
         </div>
 
 
-        <button
-            type="button"
-            class="add-button"
-            onclick={agregarUsuario}
-        >
+            <button
+                type="button"
+                class="add-button"
+            >
 
             <svg
                 viewBox="0 0 24 24"
@@ -363,19 +363,12 @@ async function eliminarUsuario(idUsuario) {
                             >
                                 No se encontraron usuarios.
                             </td>
-
                         </tr>
-
                     {/each}
-
                 </tbody>
-
             </table>
-
         </div>
-
     </div>
-
 </div>
 
 
@@ -384,7 +377,6 @@ async function eliminarUsuario(idUsuario) {
 
     .usuarios-page {
         max-width: 1200px;
-
         margin: 0 auto;
     }
 
@@ -392,19 +384,12 @@ async function eliminarUsuario(idUsuario) {
 
     .page-header {
         position: relative;
-
         background: white;
-
         border: 1px solid #E2E8F0;
-
         border-radius: 12px;
-
         padding: 30px;
-
         margin-bottom: 20px;
-
         overflow: hidden;
-
         box-shadow:
             0 4px 15px rgba(0, 0, 0, 0.03);
     }
@@ -412,17 +397,11 @@ async function eliminarUsuario(idUsuario) {
 
     .page-header::before {
         content: '';
-
         position: absolute;
-
         top: 0;
-
         left: 0;
-
         width: 100%;
-
         height: 4px;
-
         background:
             linear-gradient(
                 90deg,
@@ -434,20 +413,15 @@ async function eliminarUsuario(idUsuario) {
 
     .page-header h1 {
         margin: 0 0 8px;
-
         color: #1E293B;
-
         font-size: 28px;
-
         font-weight: 700;
     }
 
 
     .page-header p {
         margin: 0;
-
         color: #64748B;
-
         font-size: 15px;
     }
 
@@ -455,21 +429,13 @@ async function eliminarUsuario(idUsuario) {
 
     .toolbar {
         background: white;
-
         border: 1px solid #E2E8F0;
-
         border-radius: 12px;
-
         padding: 16px;
-
         margin-bottom: 20px;
-
         display: flex;
-
         align-items: center;
-
         gap: 15px;
-
         box-shadow:
             0 4px 15px rgba(0, 0, 0, 0.03);
     }
@@ -478,34 +444,22 @@ async function eliminarUsuario(idUsuario) {
 
     .search-container {
         position: relative;
-
         flex: 1;
-
         max-width: 500px;
     }
 
 
     .search-container input {
         width: 100%;
-
         height: 42px;
-
         padding: 0 15px 0 42px;
-
         border: 1px solid #E2E8F0;
-
         border-radius: 8px;
-
         outline: none;
-
         color: #1E293B;
-
         background: #FFFFFF;
-
         font-family: inherit;
-
         font-size: 14px;
-
         transition:
             border-color 0.2s ease,
             box-shadow 0.2s ease;
@@ -527,27 +481,16 @@ async function eliminarUsuario(idUsuario) {
 
     .search-icon {
         position: absolute;
-
         left: 14px;
-
         top: 50%;
-
         width: 17px;
-
         height: 17px;
-
         transform: translateY(-50%);
-
         fill: none;
-
         stroke: #94A3B8;
-
         stroke-width: 2;
-
         stroke-linecap: round;
-
         stroke-linejoin: round;
-
         pointer-events: none;
     }
 
@@ -555,38 +498,22 @@ async function eliminarUsuario(idUsuario) {
 
     .add-button {
         height: 42px;
-
         display: flex;
-
         align-items: center;
-
         justify-content: center;
-
         gap: 8px;
-
         padding: 0 17px;
-
         border: none;
-
         border-radius: 8px;
-
         background: #39A900;
-
         color: white;
-
         font-family: inherit;
-
         font-size: 14px;
-
         font-weight: 600;
-
         cursor: pointer;
-
         white-space: nowrap;
-
         box-shadow:
             0 4px 12px rgba(57, 169, 0, 0.18);
-
         transition:
             background 0.2s ease,
             transform 0.2s ease,
@@ -596,24 +523,17 @@ async function eliminarUsuario(idUsuario) {
 
     .add-button svg {
         width: 17px;
-
         height: 17px;
-
         fill: none;
-
         stroke: currentColor;
-
         stroke-width: 2;
-
         stroke-linecap: round;
     }
 
 
     .add-button:hover {
         background: #2F8F00;
-
         transform: translateY(-1px);
-
         box-shadow:
             0 6px 15px rgba(57, 169, 0, 0.22);
     }
@@ -622,13 +542,9 @@ async function eliminarUsuario(idUsuario) {
 
     .users-container {
         background: white;
-
         border: 1px solid #E2E8F0;
-
         border-radius: 12px;
-
         overflow: hidden;
-
         box-shadow:
             0 4px 15px rgba(0, 0, 0, 0.03);
     }
@@ -636,7 +552,6 @@ async function eliminarUsuario(idUsuario) {
 
     .table-wrapper {
         width: 100%;
-
         overflow-x: auto;
     }
 
@@ -644,9 +559,7 @@ async function eliminarUsuario(idUsuario) {
 
     table {
         width: 100%;
-
         border-collapse: collapse;
-
         min-width: 700px;
     }
 
@@ -658,29 +571,20 @@ async function eliminarUsuario(idUsuario) {
 
     th {
         padding: 15px 20px;
-
         text-align: left;
-
         color: #475569;
-
         font-size: 13px;
-
         font-weight: 600;
-
         border-bottom:
             1px solid #E2E8F0;
-
         white-space: nowrap;
     }
 
 
     td {
         padding: 16px 20px;
-
         color: #64748B;
-
         font-size: 14px;
-
         border-bottom:
             1px solid #F1F5F9;
     }
@@ -705,7 +609,6 @@ async function eliminarUsuario(idUsuario) {
 
     .name-cell {
         color: #1E293B;
-
         font-weight: 600;
     }
 
@@ -718,31 +621,21 @@ async function eliminarUsuario(idUsuario) {
 
     .role-badge {
         display: inline-flex;
-
         align-items: center;
-
         padding: 5px 10px;
-
         border-radius: 20px;
-
         background: #F0FDF4;
-
         border: 1px solid rgba(57, 169, 0, 0.20);
-
         color: #39A900;
-
         font-size: 12px;
-
         font-weight: 600;
     }
 
 
     .role-badge.admin-role {
         background: #FFF7ED;
-
         border-color:
             rgba(252, 115, 20, 0.25);
-
         color: #FC7314;
     }
 
@@ -755,34 +648,22 @@ async function eliminarUsuario(idUsuario) {
 
     .actions {
         display: flex;
-
         align-items: center;
-
         justify-content: center;
-
         gap: 8px;
     }
 
 
     .action-button {
         width: 35px;
-
         height: 35px;
-
         display: flex;
-
         align-items: center;
-
         justify-content: center;
-
         border: 1px solid #E2E8F0;
-
         border-radius: 8px;
-
         background: white;
-
         cursor: pointer;
-
         transition:
             background 0.2s ease,
             border-color 0.2s ease,
@@ -793,17 +674,11 @@ async function eliminarUsuario(idUsuario) {
 
     .action-button svg {
         width: 17px;
-
         height: 17px;
-
         fill: none;
-
         stroke: currentColor;
-
         stroke-width: 2;
-
         stroke-linecap: round;
-
         stroke-linejoin: round;
     }
 
@@ -816,10 +691,8 @@ async function eliminarUsuario(idUsuario) {
 
     .action-button.edit:hover {
         background: #F0FDF4;
-
         border-color:
             rgba(57, 169, 0, 0.3);
-
         transform: translateY(-1px);
     }
 
@@ -832,10 +705,8 @@ async function eliminarUsuario(idUsuario) {
 
     .action-button.delete:hover {
         background: #FFF7ED;
-
         border-color:
             rgba(252, 115, 20, 0.3);
-
         transform: translateY(-1px);
     }
 
@@ -844,11 +715,8 @@ async function eliminarUsuario(idUsuario) {
 
     .empty-state {
         padding: 40px 20px;
-
         text-align: center;
-
         color: #94A3B8;
-
         font-size: 14px;
     }
 
@@ -868,7 +736,6 @@ async function eliminarUsuario(idUsuario) {
 
         .toolbar {
             flex-direction: column;
-
             align-items: stretch;
         }
 

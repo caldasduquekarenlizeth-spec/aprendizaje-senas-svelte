@@ -1,8 +1,10 @@
 <script>
+    import { invalidate } from '$app/navigation';
+	import { onMount } from 'svelte';
     import { supabase } from '$lib/supabase';
     import { goto } from '$app/navigation';
-
-    let { children } = $props();
+    
+    let { data, children } = $props();
     let menuAbierto = $state(false);
 
     function toggleMenu() {
@@ -18,6 +20,15 @@
         await goto('/login');
     }
 
+    onMount(() => {
+            const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_OUT' || !session) {
+                    invalidate('supabase:auth');
+                }
+            });
+
+            return () => subscription.unsubscribe();
+        });
 </script>
 
 
@@ -121,7 +132,7 @@
                     aria-label="Menú de usuario"
                 >
                     <img
-                        src="/logo_th.svg"
+                        src="/foto_perfil.svg"
                         alt="Foto de perfil"
                         class="profile-image"
                     />
