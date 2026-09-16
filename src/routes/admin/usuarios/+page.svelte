@@ -1,11 +1,11 @@
 <script>
     import { enhance } from '$app/forms';
-    import { supabase } from '$lib/supabaseClient';
 
     let { data, form } = $props();
 
     let busqueda = $state('');
     let usuarioEditando = $state(null);
+    let agregandoUsuario = $state(false);
 
     let usuariosFiltrados = $derived(
         data.usuarios.filter((usuario) =>
@@ -30,37 +30,20 @@
     function cancelarEdicion() {
         usuarioEditando = null;
     }
+    function abrirAgregarUsuario() {
+    agregandoUsuario = true;
+    usuarioEditando = null;
+    }
+
+    function cancelarAgregarUsuario() {
+    agregandoUsuario = false;
+    }
 
 /**
  * Elimina un usuario de la base de datos y actualiza la lista local.
  * @param {string} idUsuario - El UUID del usuario a eliminar.
  */
-async function eliminarUsuario(idUsuario) {
-    const confirmacion = confirm('¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.');
 
-    if (!confirmacion) return;
-
-    try {
-        const { error } = await supabase
-            .from('profiles')
-            .delete()
-            .eq('id', idUsuario);
-
-        if (error) {
-            alert('Error al eliminar el usuario: ' + error.message);
-            return;
-        }
-
-        data.usuarios = data.usuarios.filter(
-            /** @param {{ id: string }} u */
-            (u) => u.id !== idUsuario
-        );
-
-    } catch (err) {
-        console.error('Error inesperado al eliminar:', err);
-        alert('Ocurrió un error inesperado. Inténtalo de nuevo.');
-    }
-}
 </script>
 
 
@@ -83,6 +66,27 @@ async function eliminarUsuario(idUsuario) {
         </div>
 
     </div>
+    {#if form?.success}
+    <div class="success-message">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" />
+        </svg>
+
+        <span>{form.message}</span>
+    </div>
+    {/if}
+
+    {#if form?.error}
+        <div class="error-message">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 9v4" />
+                <path d="M12 17h.01" />
+                <circle cx="12" cy="12" r="9" />
+            </svg>
+
+            <span>{form.error}</span>
+        </div>
+    {/if}
 
 
     <!-- =========================
@@ -123,6 +127,7 @@ async function eliminarUsuario(idUsuario) {
             <button
                 type="button"
                 class="add-button"
+                onclick={abrirAgregarUsuario}
             >
 
             <svg
@@ -138,6 +143,152 @@ async function eliminarUsuario(idUsuario) {
         </button>
 
     </div>
+    {#if agregandoUsuario}
+    <div class="edit-container">
+
+        <div class="edit-header">
+            <div>
+                <h2>Agregar usuario</h2>
+                <p>
+                    Registra un nuevo usuario en Talking Hands.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="close-button"
+                aria-label="Cerrar"
+                onclick={cancelarAgregarUsuario}
+            >
+                ×
+            </button>
+        </div>
+
+        <form
+            method="POST"
+            action="?/agregar"
+            use:enhance={() => {
+                return async ({ update, result }) => {
+                    await update();
+
+                    if (
+                        result.type === 'success' &&
+                        result.data?.success
+                    ) {
+                        agregandoUsuario = false;
+                    }
+                };
+            }}
+            class="edit-form"
+        >
+
+            <div class="form-group">
+                <label for="nombreNuevo">
+                    Nombre
+                </label>
+
+                <input
+                    id="nombreNuevo"
+                    name="nombre"
+                    type="text"
+                    required
+                    placeholder="Nombre completo"
+                />
+            </div>
+
+
+            <div class="form-group">
+                <label for="emailNuevo">
+                    Correo electrónico
+                </label>
+
+                <input
+                    id="emailNuevo"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="correo@ejemplo.com"
+                />
+            </div>
+
+
+            <div class="form-group">
+                <label for="passwordNuevo">
+                    Contraseña
+                </label>
+
+                <input
+                    id="passwordNuevo"
+                    name="password"
+                    type="password"
+                    required
+                    minlength="6"
+                    placeholder="Mínimo 6 caracteres"
+                />
+            </div>
+
+
+            <div class="form-group">
+                <label for="confirmarPasswordNuevo">
+                    Confirmar contraseña
+                </label>
+
+                <input
+                    id="confirmarPasswordNuevo"
+                    name="confirmarPassword"
+                    type="password"
+                    required
+                    minlength="6"
+                    placeholder="Repite la contraseña"
+                />
+            </div>
+
+
+            <div class="form-group">
+                <label for="rolNuevo">
+                    Rol
+                </label>
+
+                <select
+                    id="rolNuevo"
+                    name="rol"
+                    required
+                    value="aprendiz"
+                >
+                    <option value="aprendiz">
+                        Aprendiz
+                    </option>
+
+                    <option value="admin">
+                        Administrador
+                    </option>
+                </select>
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    class="cancel-button"
+                    onclick={cancelarAgregarUsuario}
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-button"
+                >
+                    Crear usuario
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+    {/if}
     {#if usuarioEditando}
     <div class="edit-container">
         <div class="edit-header">
@@ -155,13 +306,23 @@ async function eliminarUsuario(idUsuario) {
                 ×
             </button>
         </div>
+    <!-- =========================
+        FORMULARIO
+    ========================= -->
+            <form
+                method="POST"
+                action="?/editar"
+                use:enhance={() => {
+                    return async ({ update, result }) => {
+                        await update();
 
-        <form
-            method="POST"
-            action="?/editar"
-            use:enhance
-            class="edit-form"
-        >
+                        if (result.type === 'success' && result.data?.success) {
+                            usuarioEditando = null;
+                        }
+                    };
+                }}
+                class="edit-form"
+            >
             <input
                 type="hidden"
                 name="id"
@@ -279,10 +440,10 @@ async function eliminarUsuario(idUsuario) {
                             <td>
 
                                 <span
-                                    class:admin-role={usuario.rol === 'Administrador'}
+                                    class:admin-role={usuario.rol === 'admin'}
                                     class="role-badge"
                                 >
-                                    {usuario.rol}
+                                    {usuario.rol === 'admin' ? 'Administrador' : 'Aprendiz'}
                                 </span>
 
                             </td>
@@ -316,36 +477,46 @@ async function eliminarUsuario(idUsuario) {
                                     </button>
 
 
-                                    <!-- ELIMINAR -->
+                                        <!-- ELIMINAR -->
 
-                                    <button
-                                        type="button"
-                                        class="action-button delete"
-                                        aria-label="Eliminar usuario"
-                                        title="Eliminar"
-                                        onclick={() => eliminarUsuario(usuario.id)}
-                                    >
+                                        <form
+                                            method="POST"
+                                            action="?/eliminar"
+                                            use:enhance
+                                            onsubmit={(event) => {
+                                                const confirmado = confirm(
+                                                    `¿Estás seguro de que deseas eliminar a ${usuario.nombre}? Esta acción no se puede deshacer.`
+                                                );
 
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            aria-hidden="true"
+                                                if (!confirmado) {
+                                                    event.preventDefault();
+                                                }
+                                            }}
                                         >
-                                            <path d="M3 6h18" />
-
-                                            <path
-                                                d="M8 6V4h8v2"
+                                            <input
+                                                type="hidden"
+                                                name="id"
+                                                value={usuario.id}
                                             />
 
-                                            <path
-                                                d="M19 6l-1 14H6L5 6"
-                                            />
-
-                                            <path d="M10 11v5" />
-
-                                            <path d="M14 11v5" />
-                                        </svg>
-
-                                    </button>
+                                            <button
+                                                type="submit"
+                                                class="action-button delete"
+                                                aria-label="Eliminar usuario"
+                                                title="Eliminar"
+                                            >
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path d="M3 6h18" />
+                                                    <path d="M8 6V4h8v2" />
+                                                    <path d="M19 6l-1 14H6L5 6" />
+                                                    <path d="M10 11v5" />
+                                                    <path d="M14 11v5" />
+                                                </svg>
+                                            </button>
+                                        </form>
 
                                 </div>
 
@@ -868,4 +1039,45 @@ async function eliminarUsuario(idUsuario) {
         background: #2f8f00;
     }
 
+    .actions form {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    }
+    .success-message,
+    .error-message {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .success-message {
+        color: #166534;
+        background: #F0FDF4;
+        border: 1px solid #BBF7D0;
+    }
+
+    .error-message {
+        color: #B91C1C;
+        background: #FEF2F2;
+        border: 1px solid #FECACA;
+    }
+
+    .success-message svg,
+    .error-message svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
 </style>

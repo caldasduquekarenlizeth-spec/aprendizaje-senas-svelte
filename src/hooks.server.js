@@ -3,7 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 import {
     PUBLIC_SUPABASE_URL,
     PUBLIC_SUPABASE_ANON_KEY
-} from '$lib/supabaseClient'
+} from '$env/static/public'
 
 export async function handle({ event, resolve }) {
 
