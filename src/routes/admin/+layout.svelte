@@ -88,6 +88,14 @@
                     <a href="/admin/modulos">
                         Módulos
                     </a>
+
+                    <a href="/admin/lecciones">
+                        Lecciones
+                    </a>
+
+                    <a href="/admin/senas">
+                        Señas
+                    </a>
         
                     <a href="/admin/logros">
                         Logros

@@ -83,6 +83,34 @@
 
         </a>
 
+        <a href="/admin/ranking" class="card">
+
+            <div class="icon">
+                🏆
+            </div>
+
+            <div>
+                <h2>Ranking</h2>
+                <p>
+                    Visualiza el estado actual del ranking.
+                </p>
+            </div>
+        </a>
+
+        <a href="/admin/logros" class="card">
+
+            <div class="icon">
+                🏅
+            </div>
+
+            <div>
+                <h2>Logros</h2>
+                <p>
+                    Gestiona los logros obtenibles en la aplicación.
+                </p>
+            </div>
+        </a>
+
     </div>
 
 </div>
