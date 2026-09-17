@@ -291,14 +291,14 @@
         display: flex;
         align-items: center;
         gap: 7px;
-        padding: 0 15px;
+        padding: 35px 15px;
         border: none;
         border-radius: 8px;
         background: transparent;
         color: #1E293B;
         text-decoration: none;
         font-family: inherit;
-        font-size: 14px;
+        font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
         transition:
@@ -379,11 +379,11 @@
 
     .dropdown-menu a {
         display: block;
-        padding: 11px 13px;
+        padding: 14px 14px;
         border-radius: 7px;
         color: #1E293B;
         text-decoration: none;
-        font-size: 14px;
+        font-size: 1rem;
         font-weight: 500;
         transition:
             background 0.2s ease,

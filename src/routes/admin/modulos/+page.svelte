@@ -126,8 +126,6 @@
     <title>Módulos | Administrador</title>
 </svelte:head>
 
-<h1>Gestión de módulos</h1>
-
 <div class="modulos-page">
 
     <!-- =========================
@@ -357,6 +355,7 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     }
 
+
     .page-header::before {
         content: '';
         position: absolute;
@@ -368,10 +367,11 @@
     }
 
     .page-header h1 {
-        margin: 0 0 8px;
-        color: #1E293B;
-        font-size: 28px;
-        font-weight: 700;
+        font-size: 2.25rem;
+		font-weight: 800;
+		color: #143d23;
+		margin: 0;
+		letter-spacing: -0.025em;
     }
 
     .page-header p {

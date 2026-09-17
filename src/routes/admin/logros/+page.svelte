@@ -276,7 +276,7 @@
 	}
 
 	.main-title {
-		font-size: 1.875rem;
+		font-size: 2.475rem;
 		font-weight: 700;
 		letter-spacing: -0.025em;
 		color: #143d23;
@@ -286,7 +286,7 @@
 	.subtitle {
 		color: #6b7280;
 		margin-top: 0.25rem;
-		font-size: 0.95rem;
+		font-size: 1rem;
 	}
 
 	/* Tarjeta de Resumen */
@@ -300,7 +300,7 @@
 	}
 
 	.summary-title {
-		font-size: 1.125rem;
+		font-size: 1.350rem;
 		font-weight: 700;
 		color: #143d23;
 		margin-top: 0;
@@ -310,7 +310,7 @@
 	.summary-row {
 		display: flex;
 		justify-content: space-between;
-		font-size: 0.875rem;
+		font-size: 1rem;
 		color: #4b5563;
 		margin-bottom: 0.75rem;
 	}
@@ -332,7 +332,7 @@
 	}
 
 	.btn-primary {
-		background-color: #7ac70c;
+		background-color: #39A900;
 		color: #ffffff;
 		padding: 0.5rem 1.5rem;
 		border-radius: 9999px;
@@ -349,9 +349,9 @@
 
 	.btn-secondary {
 		margin-top: 0.5rem;
-		background-color: #7ac70c;
+		background-color: #39A900;
 		color: #ffffff;
-		font-size: 0.75rem;
+		font-size: 1rem;
 		padding: 0.375rem 1.5rem;
 		border-radius: 9999px;
 		font-weight: 500;
@@ -406,24 +406,24 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: #2d6a3f;
+		color: #39A900;
 	}
 
 	.icon-svg {
-		width: 2rem;
-		height: 2rem;
+		width: 2.5rem;
+		height: 2.5rem;
 	}
 
 	/* Textos */
 	.achievement-title {
 		font-weight: 700;
-		font-size: 1.125rem;
+		font-size: 1.525rem;
 		color: #143d23;
 		margin: 0;
 	}
 
 	.achievement-description {
-		font-size: 0.75rem;
+		font-size: 1rem;
 		color: #6b7280;
 		max-width: 20rem;
 		margin: 0;
@@ -531,7 +531,7 @@
 	.form-group input:focus,
 	.form-group textarea:focus,
 	.form-group select:focus {
-		border-color: #7ac70c;
+		border-color: #39A900;
 	}
 
 	.form-row {
@@ -565,7 +565,7 @@
 	}
 
 	.btn-save {
-		background-color: #7ac70c;
+		background-color: #39A900;
 		border: none;
 		color: white;
 		padding: 0.5rem 1.25rem;

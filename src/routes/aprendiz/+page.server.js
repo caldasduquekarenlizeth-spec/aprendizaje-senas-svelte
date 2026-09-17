@@ -12,6 +12,5 @@ export async function load({ locals }) {
         throw redirect(303, '/admin');
     }
 
-    // El usuario sí es aprendiz
-    throw redirect(303, '/modulos');
+    // Si es aprendiz, permanece en /aprendiz
 }

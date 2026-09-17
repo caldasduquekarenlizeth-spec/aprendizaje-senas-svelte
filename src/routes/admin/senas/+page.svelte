@@ -281,7 +281,7 @@
 	}
 
 	.subtitle {
-		font-size: 1rem;
+		font-size: 1.25rem;
 		color: #6b7280;
 		margin-top: 0.25rem;
 	}
@@ -419,7 +419,7 @@
 		right: 0.75rem;
 		background-color: #f2f9e8;
 		color: #2d6a3f;
-		font-size: 0.7rem;
+		font-size: 0.8rem;
 		font-weight: 700;
 		padding: 0.2rem 0.6rem;
 		border-radius: 9999px;
@@ -431,14 +431,14 @@
 	}
 
 	.sign-name {
-		font-size: 1.125rem;
+		font-size: 1.135rem;
 		font-weight: 700;
 		color: #143d23;
 		margin: 0 0 0.3rem 0;
 	}
 
 	.sign-desc {
-		font-size: 0.8rem;
+		font-size: 0.95rem;
 		color: #6b7280;
 		margin: 0;
 		line-height: 1.3;
@@ -462,13 +462,13 @@
 	}
 
 	.btn-edit {
-		background-color: #e0e7ff;
-		color: #3730a3;
+		background-color: #d2ffbc;
+		color: #39A900;
 	}
 
 	.btn-delete {
-		background-color: #fee2e2;
-		color: #991b1b;
+		background-color: #feeae2;
+		color: #FC7314;
 	}
 
 	.empty-state {

@@ -322,7 +322,7 @@
 	.user-name {
 		font-size: 1.4rem;
 		font-weight: 700;
-		color: #15803d;
+		color: #143d23;
 		margin: 0 0 1.2rem 0;
 	}
 
@@ -331,10 +331,10 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.55rem 1.2rem;
-		border: 1.5px solid #16a34a;
+		border: 1.5px solid #39A900;
 		border-radius: 25px;
 		background: transparent;
-		color: #16a34a;
+		color: #39A900;
 		font-weight: 600;
 		font-size: 0.9rem;
 		cursor: pointer;
@@ -367,7 +367,7 @@
 		align-items: center;
 		justify-content: space-between;
 		text-decoration: none;
-		color: #15803d;
+		color: #39A900;
 		font-weight: 600;
 		font-size: 0.95rem;
 		transition: color 0.2s;
@@ -397,12 +397,12 @@
 	.section-title {
 		font-size: 1.5rem;
 		font-weight: 700;
-		color: #15803d;
+		color: #143d23;
 		margin: 0 0 0.3rem 0;
 	}
 
 	.section-subtitle {
-		font-size: 0.875rem;
+		font-size: 0.975rem;
 		color: #64748b;
 		margin: 0;
 	}
@@ -465,7 +465,7 @@
 	}
 
 	.activity-text strong {
-		color: #0f172a;
+		color: #143d23;
 	}
 
 	.activity-time {
@@ -516,7 +516,7 @@
 	.modal-header h2 {
 		font-size: 1.25rem;
 		font-weight: 700;
-		color: #15803d;
+		color: #143d23;
 		margin: 0;
 	}
 
@@ -593,7 +593,7 @@
 	.btn-save {
 		padding: 0.55rem 1.3rem;
 		border: none;
-		background-color: #16a34a;
+		background-color: #39A900;
 		border-radius: 20px;
 		color: #ffffff;
 		font-weight: 600;
@@ -603,7 +603,7 @@
 	}
 
 	.btn-save:hover {
-		background-color: #15803d;
+		background-color: #42c500;
 	}
 
 	.btn-save:disabled {

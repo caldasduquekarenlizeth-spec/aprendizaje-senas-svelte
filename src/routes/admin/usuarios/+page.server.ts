@@ -1,5 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import { supabaseAdmin } from '$lib/server/supabaseAdmin';
+import { fail } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ locals }) => {
     if (!locals.user || locals.rol !== 'admin') {
@@ -236,23 +237,19 @@ export const actions: Actions = {
             };
         }
 
-        const { data, error } = await locals.supabase
-            .from('profiles')
-            .delete()
-            .eq('id', String(id));
+        const { error } = await supabaseAdmin.auth.admin.deleteUser(String(id));
 
-        if (error) {
-            console.error('Error Supabase al eliminar:', error);
+		if (error) {
+			console.error('Error al eliminar usuario en auth:', error);
+			return fail(500, {
+				success: false,
+				error: error.message || 'No se pudo eliminar el usuario del sistema de autenticación.'
+			});
+		}
 
-            return {
-                success: false,
-                error: error.message
-            };
-        }
-
-        return {
-            success: true,
-            message: 'Usuario eliminado correctamente.'
-        };
-    }
+		return {
+			success: true,
+			message: 'Usuario eliminado correctamente.'
+		};
+	}
 };

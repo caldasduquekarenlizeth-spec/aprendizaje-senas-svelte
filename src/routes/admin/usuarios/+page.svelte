@@ -51,8 +51,6 @@
     <title>Usuarios | Administrador</title>
 </svelte:head>
 
-<h1>Gestión de usuarios</h1>
-
 <div class="usuarios-page">
 
     <div class="page-header">
@@ -584,7 +582,7 @@
 
     .page-header h1 {
         margin: 0 0 8px;
-        color: #1E293B;
+        color: #143d23;
         font-size: 28px;
         font-weight: 700;
     }
@@ -744,7 +742,7 @@
         padding: 15px 20px;
         text-align: left;
         color: #475569;
-        font-size: 13px;
+        font-size: 1.15rem;
         font-weight: 600;
         border-bottom:
             1px solid #E2E8F0;
@@ -755,7 +753,7 @@
     td {
         padding: 16px 20px;
         color: #64748B;
-        font-size: 14px;
+        font-size: 1rem;
         border-bottom:
             1px solid #F1F5F9;
     }
@@ -798,7 +796,7 @@
         background: #F0FDF4;
         border: 1px solid rgba(57, 169, 0, 0.20);
         color: #39A900;
-        font-size: 12px;
+        font-size: 0.80rem;
         font-weight: 600;
     }
 

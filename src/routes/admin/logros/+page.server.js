@@ -5,7 +5,7 @@ export const load = async ({ locals }) => {
 	const { data: logros, error } = await locals.supabase
 		.from('logros')
 		.select('*')
-		.order('titulo', { ascending: true });
+		.order('id', { ascending: true });
 
 	if (error) {
 		console.error('Error cargando logros:', error);

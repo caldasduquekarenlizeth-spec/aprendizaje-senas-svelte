@@ -52,9 +52,26 @@
 				titulo: lesson.titulo,
 				descripcion: lesson.descripcion || '',
 				tipo: lesson.tipo || 'Lección',
-				puntos_xp: lesson.puntos_xp || 10,
-				exercises: lesson.exercises ? JSON.parse(JSON.stringify(lesson.exercises)) : []
-			};
+				puntos_xp: lesson.puntos_xp ?? 10,
+				exercises: lesson.exercises
+                ? lesson.exercises.map((ex) => {
+                        let opts = [];
+                        if (Array.isArray(ex.opciones)) {
+                            opts = ex.opciones;
+                        } else if (typeof ex.opciones === 'string') {
+                            try { opts = JSON.parse(ex.opciones); } catch (e) { opts = []; }
+                        }
+
+                        return {
+                            pregunta: ex.pregunta || '',
+                            opcion1: opts[0] || ex.opcion1 || '',
+                            opcion2: opts[1] || ex.opcion2 || '',
+                            opcion3: opts[2] || ex.opcion3 || '',
+                            respuesta_correcta: ex.respuesta_correcta || ''
+                        };
+                    })
+                : []
+        };
 		} else {
 			form = {
 				id: null,
@@ -75,10 +92,8 @@
 
 	function addExercise() {
 		form.exercises = [
-			// @ts-ignore
 			...form.exercises,
-			// @ts-ignore
-			{ pregunta: '', opcion1: '', opcion2: '', opcion3: '', respuesta_correcta: '' }
+			{ pregunta: '', opcion1: '', opcion2: '', opcion3: '', respuesta_correcta: '' }	
 		];
 	}
 
@@ -129,12 +144,9 @@
 			if (form.exercises.length > 0) {
 				const exercisesPayload = form.exercises.map((ex, idx) => ({
 					lesson_id: lessonId,
-					// @ts-ignore
 					pregunta: ex.pregunta,
 					tipo: 'opcion_multiple',
-					// @ts-ignore
 					opciones: [ex.opcion1, ex.opcion2, ex.opcion3].filter(Boolean),
-					// @ts-ignore
 					respuesta_correcta: ex.respuesta_correcta,
 					orden: idx + 1
 				}));
@@ -147,7 +159,6 @@
 			closeModal();
 		} catch (err) {
 			console.error(err);
-			// @ts-ignore
 			errorMessage = err.message || 'Error al guardar la lección.';
 		} finally {
 			isLoading = false;
@@ -290,11 +301,15 @@
 						<option value="practica">Práctica</option>
 					</select>
 				</div>
+				<div class="form-group flex-1">
+					<label for="modal-xp">Puntos XP</label>
+					<input id="modal-xp" type="number" min="1" max="500" bind:value={form.puntos_xp} required />
+				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="modal-desc">Descripción</label>
-				<textarea id="modal-desc" bind:value={form.descripcion} rows="2" placeholder="Ej. Aprende las señas de las cinco vocales."></textarea>
+				<textarea id="modal-desc" bind:value={form.descripcion} rows="2" placeholder="Ej. Aprende las señas de las cinco vocales." style="resize: none"></textarea>
 			</div>
 
 			<hr class="divider" />
@@ -508,7 +523,7 @@
 	}
 
 	.lesson-title {
-		font-size: 1rem;
+		font-size: 1.125rem;
 		font-weight: 700;
 		color: #143d23;
 		margin: 0;
@@ -516,8 +531,8 @@
 
 	/* Insignias */
 	.type-badge {
-		font-size: 0.7rem;
-		font-weight: 700;
+		font-size: 0.9rem;
+		font-weight: 600;
 		padding: 0.15rem 0.55rem;
 		border-radius: 9999px;
 	}
@@ -533,7 +548,7 @@
 	}
 
 	.lesson-desc {
-		font-size: 0.825rem;
+		font-size: 0.925rem;
 		color: #6b7280;
 		margin: 0;
 	}
@@ -557,13 +572,13 @@
 	}
 
 	.edit-btn {
-		background-color: #e0e7ff;
-		color: #3730a3;
+		background-color: #d7ffc3;
+		color: #39A900;
 	}
 
 	.delete-btn {
 		background-color: #fee2e2;
-		color: #991b1b;
+		color: #FC7314;
 	}
 
 	/* Botón Crear */
@@ -572,7 +587,7 @@
 	}
 
 	.btn-create {
-		background-color: #7ac70c;
+		background-color: #39A900;
 		color: #ffffff;
 		border: none;
 		padding: 0.75rem 1.5rem;
@@ -584,7 +599,7 @@
 	}
 
 	.btn-create:hover {
-		background-color: #6cb30a;
+		background-color: #40be01;
 	}
 
 	.empty-state {
@@ -667,7 +682,7 @@
 	}
 
 	.form-group label {
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 		font-weight: 600;
 		color: #374151;
 	}
@@ -678,7 +693,7 @@
 		padding: 0.55rem 0.75rem;
 		border: 1px solid #d1d5db;
 		border-radius: 0.5rem;
-		font-size: 0.875rem;
+		font-size: 0.975rem;
 		outline: none;
 	}
 
@@ -716,7 +731,7 @@
 		border: none;
 		padding: 0.3rem 0.75rem;
 		border-radius: 0.4rem;
-		font-size: 0.75rem;
+		font-size: 0.85rem;
 		font-weight: 600;
 		cursor: pointer;
 	}
@@ -753,7 +768,7 @@
 		padding: 0.45rem 0.6rem;
 		border: 1px solid #d1d5db;
 		border-radius: 0.4rem;
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 	}
 
 	.options-grid {
@@ -784,7 +799,7 @@
 	}
 
 	.btn-save {
-		background-color: #7ac70c;
+		background-color: #39A900;
 		border: none;
 		color: white;
 		padding: 0.5rem 1.25rem;
@@ -795,7 +810,7 @@
 	}
 
     .select-label {
-		font-size: 0.75rem;
+		font-size: 0.85rem;
 		font-weight: 600;
 		color: #4b5563;
 		margin: 0.25rem 0 0 0;
@@ -805,7 +820,7 @@
 		padding: 0.45rem 0.5rem;
 		border: 1px solid #d1d5db;
 		border-radius: 0.4rem;
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 		background-color: #ffffff;
 		outline: none;
 	}
@@ -818,7 +833,7 @@
 	}
 
 	.correct-section label {
-		font-size: 0.75rem;
+		font-size: 0.85rem;
 		font-weight: 700;
 		color: #143d23;
 		white-space: nowrap;
@@ -828,7 +843,7 @@
 		flex: 1;
 		padding: 0.45rem 0.6rem;
 		border-radius: 0.4rem;
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 	}
 
 	.empty-exercises {

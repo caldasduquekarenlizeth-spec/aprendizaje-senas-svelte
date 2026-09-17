@@ -153,7 +153,7 @@
     .welcome p {
         margin: 0;
         color: #64748B;
-        font-size: 15px;
+        font-size: 1rem;
     }
 
     .cards {
@@ -203,7 +203,7 @@
         margin: 0 0 7px;
         color: #1E293B; /* Gris Carbón */
         font-size: 19px;
-        font-weight: 600;
+        font-weight: 700;
         transition: color 0.2s ease;
     }
 
@@ -214,7 +214,7 @@
     .card p {
         margin: 0;
         color: #64748B;
-        font-size: 14px;
+        font-size: 1rem;
         line-height: 1.5;
     }
 

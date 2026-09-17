@@ -207,21 +207,21 @@
         width: 100%;
         max-width: 450px;
         padding: 35px;
-        background: #FFFFFF; /* Blanco Puro */
+        background: #FFFFFF;
         border-radius: 12px;
-        border: 1px solid #E2E8F0; /* Borde suave */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra tenue */
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
     h1 {
         text-align: center;
         margin-bottom: 10px;
-        color: #1E293B; /* Gris Carbón */
+        color: #1E293B;
     }
 
     .descripcion {
         text-align: center;
-        color: #64748B; /* Gris Muted */
+        color: #64748B;
         margin-bottom: 25px;
         font-size: 14px;
     }
@@ -234,7 +234,7 @@
         display: block;
         margin-bottom: 7px;
         font-weight: 600;
-        color: #1E293B; /* Gris Carbón */
+        color: #1E293B;
         font-size: 14px;
     }
 
@@ -242,7 +242,7 @@
         width: 100%;
         box-sizing: border-box;
         padding: 12px;
-        border: 1px solid #CBD5E1; /* Borde gris sutil */
+        border: 1px solid #CBD5E1;
         border-radius: 6px;
         font-size: 15px;
         color: #1E293B;
@@ -252,8 +252,8 @@
 
     input:focus {
         outline: none;
-        border-color: #39A900; /* Verde SENA al enfocar */
-        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15); /* Resplandor suave verde */
+        border-color: #39A900;
+        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15);
     }
 
     .input-wrapper{
