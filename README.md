@@ -1,42 +1,43 @@
-# sv
+# 🤟 Talking Hands
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+**Talking Hands** es una plataforma web educativa interactiva diseñada para la enseñanza y aprendizaje de la **Lengua de Señas Colombiana (LSC)** con un enfoque gamificado, orientada a la comunidad académica del **SENA**.
 
-## Creating a project
+---
 
-If you're seeing this, you've probably already done this step. Congrats!
+## 🚀 Características Principales
 
-```sh
-# create a new project
-npx sv create my-app
-```
+* **Estructura Pedagógica:** Organización del contenido por **Módulos**, los cuales contienen **Lecciones** compuestas por diversos **Ejercicios** prácticos.
+* **Sistema de Gamificación:**
+  * **Sistema de Ranking:** Clasificación de aprendices basada en su puntaje y progresión.
+  * **Logros:** Desbloqueo de insignias y reconocimientos a medida que se completan metas u objetivos.
+* **Control de Acceso por Roles (RBAC):**
+  * **Aprendiz:** Acceso a módulos, lecciones, seguimiento de progreso personal, logros y tabla de clasificación.
+  * **Admin:** Panel de administración para la gestión de contenidos (módulos, lecciones, ejercicios), usuarios y métricas generales.
 
-To recreate this project with the same configuration:
+---
 
-```sh
-# recreate this project
-npx sv@0.17.0 create --template minimal --types jsdoc --install npm aprendizaje-senas
-```
+## 🛠️ Tecnologías Utilizadas
 
-## Developing
+* **Frontend & Backend Framework:** [SvelteKit](https://kit.svelte.dev/) (Svelte 5)
+* **Base de Datos & Autenticación:** [Supabase](https://supabase.com/) (PostgreSQL)
+* **Estilos:** CSS
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+---
 
-```sh
-npm run dev
+## 📋 Requisitos Previos
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Antes de comenzar, asegúrate de contar con lo siguiente instalado en tu entorno local:
 
-## Building
+* [Node.js](https://nodejs.org/) (Versión 18 o superior)
+* **npm**, **pnpm** o **yarn**
+* Una cuenta activa en [Supabase](https://supabase.com/)
 
-To create a production version of your app:
+---
 
-```sh
-npm run build
-```
+## ⚙️ Configuración y Despliegue Local
 
-You can preview the production build with `npm run preview`.
+### 1. Clonar el Repositorio
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```bash
+git clone [https://github.com/caldasduquekarenlizeth-spec/aprendizaje-senas-svelte.git](https://github.com/caldasduquekarenlizeth-spec/aprendizaje-senas-svelte.git)
+cd talking-hands
